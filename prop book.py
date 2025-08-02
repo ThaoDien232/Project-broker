@@ -122,14 +122,17 @@ def calculate_profit_loss(df, quarter_prices, current_prices, quarter):
         0 if row['Quarter_End_Market_Value'] == 0 else (row['Profit_Loss'] / row['Quarter_End_Market_Value'] * 100), axis=1).round(1)
     return df_calc
     
-def formatted_table(df, latest_quarter):
+def formatted_table(df, latest_quarter, selected_quarters=None):
     if df.empty:
         return pd.DataFrame()
     # Get numeric columns (excluding Ticker, Broker, Quarter)
     numeric_cols = df.select_dtypes(include=['number']).columns.tolist()
     value_col = numeric_cols[0] if len(numeric_cols) == 1 else st.selectbox("Select value column:", numeric_cols)
-    # Use all quarters present in the filtered data (not just the latest)
-    all_quarters = sort_quarters_by_date(df['Quarter'].unique())
+    # Use selected quarters for columns if provided, else all in data
+    if selected_quarters is None:
+        all_quarters = sort_quarters_by_date(df['Quarter'].unique())
+    else:
+        all_quarters = sort_quarters_by_date(selected_quarters)
     # Create pivot table with Ticker as index and all selected Quarters as columns
     pivot_table = df.pivot_table(
         index='Ticker',
@@ -138,8 +141,11 @@ def formatted_table(df, latest_quarter):
         aggfunc='sum',
         fill_value=0
     )
-    # Only keep columns for quarters present in the filtered data (and selected by user)
-    pivot_table = pivot_table[[q for q in all_quarters if q in pivot_table.columns]]
+    # Only keep columns for selected quarters (even if some are all zeros)
+    for q in all_quarters:
+        if q not in pivot_table.columns:
+            pivot_table[q] = 0
+    pivot_table = pivot_table[all_quarters]
     tickers = [t for t in pivot_table.index.tolist() if t.upper() != 'OTHERS']
     # --- Fix: Check if latest_quarter is in columns ---
     if latest_quarter not in pivot_table.columns:
@@ -224,7 +230,7 @@ def display_prop_book_table():
     st.subheader(f"{selected_brokers} Prop Book")
     
     with st.spinner("Loading data and calculating price changes..."):
-        formatted_df = formatted_table(filtered_df, latest_quarter)
+        formatted_df = formatted_table(filtered_df, latest_quarter, selected_quarters)
         st.dataframe(formatted_df, use_container_width=True)
 
 # Main application
