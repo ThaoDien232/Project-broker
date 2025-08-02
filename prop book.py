@@ -3,6 +3,7 @@ import pandas as pd
 import os
 import requests
 from datetime import datetime
+import numpy as np
 
 # Load the prop book data with error handling
 @st.cache_data
@@ -237,14 +238,14 @@ def get_quarter_end_prices(tickers, quarter):
     year_part = quarter[2:]  # "25", "24", etc. 
     # Convert 2-digit year to 4-digit year
     full_year = 2000 + int(year_part)
-    end_date = str(full_year) + quarter_end_dates.get(q_part, "-12-31")
+    end_date = str(full_year) + {"1Q":"-03-31", "2Q":"-06-30", "3Q":"-09-30", "4Q":"-12-31"}[q_part]
     
     for ticker in tickers:
         if ticker.upper() == "OTHERS":
             prices[ticker] = np.nan
         else:
             price_df = fetch_historical_price(ticker, end_date)
-            prices[ticker] = get_price_for_date(price_df, pd.to_datetime(end_date))
+            prices[ticker] = get_quarter_end_prices(price_df, pd.to_datetime(end_date))
     return prices
 
 @st.cache_data
