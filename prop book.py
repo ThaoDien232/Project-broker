@@ -133,7 +133,7 @@ def formatted_table(df, latest_quarter, selected_quarters=None):
         all_quarters = sort_quarters_by_date(df['Quarter'].unique())
     else:
         all_quarters = sort_quarters_by_date(selected_quarters)
-    # Create pivot table with Ticker as index and all selected Quarters as columns
+    # Create pivot table for the selected broker, then reindex columns to ensure all selected quarters are present
     pivot_table = df.pivot_table(
         index='Ticker',
         columns='Quarter',
@@ -141,11 +141,8 @@ def formatted_table(df, latest_quarter, selected_quarters=None):
         aggfunc='sum',
         fill_value=0
     )
-    # Only keep columns for selected quarters (even if some are all zeros)
-    for q in all_quarters:
-        if q not in pivot_table.columns:
-            pivot_table[q] = 0
-    pivot_table = pivot_table[all_quarters]
+    # Reindex columns to ensure all selected quarters are present, fill missing with 0
+    pivot_table = pivot_table.reindex(columns=all_quarters, fill_value=0)
     tickers = [t for t in pivot_table.index.tolist() if t.upper() != 'OTHERS']
     # Only add profit/loss columns for the latest quarter
     if latest_quarter in pivot_table.columns and tickers:
