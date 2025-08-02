@@ -133,9 +133,9 @@ def formatted_table(df, latest_quarter, selected_quarters=None):
         all_quarters = sort_quarters_by_date(df['Quarter'].unique())
     else:
         all_quarters = sort_quarters_by_date(selected_quarters)
-st.write("Filtered DataFrame Preview:")
-st.dataframe(filtered_df)
-st.write("Quarters in filtered data:", filtered_df['Quarter'].unique())
+        st.write("Filtered DataFrame Preview:")
+        st.dataframe(filtered_df)
+        st.write("Quarters in filtered data:", filtered_df['Quarter'].unique())
     # Create pivot table for the selected broker, then reindex columns to ensure all selected quarters are present
     pivot_table = df.pivot_table(
         index='Ticker',
