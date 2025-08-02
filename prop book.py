@@ -195,42 +195,72 @@ def fetch_historical_price(ticker: str, end_date: str = None) -> pd.DataFrame:
     if ticker.upper() == "OTHERS":
         return pd.DataFrame()
     
-    # TCBS API endpoint for historical data
-    url = "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term"
+    # Try the simpler TCBS API endpoint first
+    url = "https://apipubaws.tcbs.com.vn/tcanalysis/v1/ticker/{}/historical-quotes".format(ticker)
     
-    # Parameters for stock data - don't use 'to' parameter as it may cause issues
-    params = {
-        "ticker": ticker,
-        "type": "stock",
-        "resolution": "D",  # Daily data
-    }
-    
-    st.write(f"Debug: API call for {ticker} with params: {params}")
+    st.write(f"Debug: API call for {ticker} using URL: {url}")
     
     try:
-        response = requests.get(url, params=params, timeout=10)
+        response = requests.get(url, timeout=10)
         st.write(f"Debug: API response status for {ticker}: {response.status_code}")
-        response.raise_for_status()
-        data = response.json()
         
-        st.write(f"Debug: API response keys for {ticker}: {list(data.keys()) if isinstance(data, dict) else 'Not a dict'}")
-        
-        if 'data' in data and data['data']:
-            df = pd.DataFrame(data['data'])
-            df['tradingDate'] = pd.to_datetime(df['tradingDate'])
+        if response.status_code == 200:
+            data = response.json()
+            st.write(f"Debug: API response keys for {ticker}: {list(data.keys()) if isinstance(data, dict) else 'Not a dict'}")
             
-            # Filter by end_date if provided
-            if end_date:
-                target_date = pd.to_datetime(end_date)
-                # Get data up to and including the target date
-                df = df[df['tradingDate'] <= target_date]
-                st.write(f"Debug: Filtered to {len(df)} records up to {end_date}")
-            
-            st.write(f"Debug: Got {len(df)} price records for {ticker}")
-            return df
+            if 'data' in data and data['data']:
+                df = pd.DataFrame(data['data'])
+                # Convert date column to datetime
+                if 'tradingDate' in df.columns:
+                    df['tradingDate'] = pd.to_datetime(df['tradingDate'])
+                elif 'date' in df.columns:
+                    df['tradingDate'] = pd.to_datetime(df['date'])
+                    
+                # Filter by end_date if provided
+                if end_date and 'tradingDate' in df.columns:
+                    target_date = pd.to_datetime(end_date)
+                    df = df[df['tradingDate'] <= target_date]
+                    st.write(f"Debug: Filtered to {len(df)} records up to {end_date}")
+                
+                st.write(f"Debug: Got {len(df)} price records for {ticker}")
+                st.write(f"Debug: Columns available: {list(df.columns)}")
+                return df
+            else:
+                st.write(f"Debug: No data in API response for {ticker}")
+                return pd.DataFrame()
         else:
-            st.write(f"Debug: No data in API response for {ticker}")
+            # If first API fails, try the original API with different parameters
+            st.write(f"Debug: First API failed, trying alternative endpoint...")
+            
+            url2 = "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term"
+            params = {
+                "ticker": ticker,
+                "type": "stock",
+                "resolution": "1D",  # Try with "1D" instead of "D"
+                "count": 500  # Limit to recent 500 days
+            }
+            
+            st.write(f"Debug: Trying alternative API with params: {params}")
+            response2 = requests.get(url2, params=params, timeout=10)
+            st.write(f"Debug: Alternative API response status: {response2.status_code}")
+            
+            if response2.status_code == 200:
+                data2 = response2.json()
+                if 'data' in data2 and data2['data']:
+                    df = pd.DataFrame(data2['data'])
+                    df['tradingDate'] = pd.to_datetime(df['tradingDate'])
+                    
+                    if end_date:
+                        target_date = pd.to_datetime(end_date)
+                        df = df[df['tradingDate'] <= target_date]
+                        st.write(f"Debug: Filtered to {len(df)} records up to {end_date}")
+                    
+                    st.write(f"Debug: Got {len(df)} price records for {ticker} from alternative API")
+                    return df
+            
+            st.warning(f"Both APIs failed for {ticker}")
             return pd.DataFrame()
+            
     except Exception as e:
         st.warning(f"Could not fetch price data for {ticker}: {str(e)}")
         return pd.DataFrame()
