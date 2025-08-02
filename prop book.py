@@ -229,6 +229,17 @@ def fetch_historical_price(ticker: str, end_date: str = None) -> pd.DataFrame:
 
 
 @st.cache_data
+def get_price_for_date(price_df, target_date):
+    """
+    Return the closing price for the closest date <= target_date.
+    """
+    if price_df.empty:
+        return np.nan
+    price_df = price_df[price_df['tradingDate'] <= pd.to_datetime(target_date)]
+    if price_df.empty:
+        return np.nan
+    return price_df.iloc[-1]['close']
+
 def get_quarter_end_prices(tickers, quarter):
     """Get prices at the end of a specific quarter"""
     prices = {}
@@ -246,7 +257,7 @@ def get_quarter_end_prices(tickers, quarter):
             prices[ticker] = np.nan
         else:
             price_df = fetch_historical_price(ticker, end_date)
-            prices[ticker] = get_quarter_end_prices(price_df, pd.to_datetime(end_date))
+            prices[ticker] = get_price_for_date(price_df, end_date)
     return prices
 
 @st.cache_data
