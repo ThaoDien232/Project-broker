@@ -195,72 +195,33 @@ def fetch_historical_price(ticker: str, end_date: str = None) -> pd.DataFrame:
     if ticker.upper() == "OTHERS":
         return pd.DataFrame()
     
-    # Try the simpler TCBS API endpoint first
-    url = "https://apipubaws.tcbs.com.vn/tcanalysis/v1/ticker/{}/historical-quotes".format(ticker)
+    # TCBS API endpoint for historical data
+    url = "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term"
     
-    st.write(f"Debug: API call for {ticker} using URL: {url}")
+    # Parameters for stock data
+    params = {
+        "ticker": ticker,
+        "type": "stock",
+        "resolution": "D",  # Daily data
+    }
+    
+    # Add end date if provided
+    if end_date:
+        params["to"] = end_date
     
     try:
-        response = requests.get(url, timeout=10)
-        st.write(f"Debug: API response status for {ticker}: {response.status_code}")
-        
-        if response.status_code == 200:
-            data = response.json()
-            st.write(f"Debug: API response keys for {ticker}: {list(data.keys()) if isinstance(data, dict) else 'Not a dict'}")
-            
-            if 'data' in data and data['data']:
-                df = pd.DataFrame(data['data'])
-                # Convert date column to datetime
-                if 'tradingDate' in df.columns:
-                    df['tradingDate'] = pd.to_datetime(df['tradingDate'])
-                elif 'date' in df.columns:
-                    df['tradingDate'] = pd.to_datetime(df['date'])
-                    
-                # Filter by end_date if provided
-                if end_date and 'tradingDate' in df.columns:
-                    target_date = pd.to_datetime(end_date)
-                    df = df[df['tradingDate'] <= target_date]
-                    st.write(f"Debug: Filtered to {len(df)} records up to {end_date}")
-                
-                st.write(f"Debug: Got {len(df)} price records for {ticker}")
-                st.write(f"Debug: Columns available: {list(df.columns)}")
-                return df
-            else:
-                st.write(f"Debug: No data in API response for {ticker}")
-                return pd.DataFrame()
-        else:
-            # If first API fails, try the original API with different parameters
-            st.write(f"Debug: First API failed, trying alternative endpoint...")
-            
-            url2 = "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term"
-            params = {
-                "ticker": ticker,
-                "type": "stock",
-                "resolution": "1D",  # Try with "1D" instead of "D"
-                "count": 500  # Limit to recent 500 days
-            }
-            
-            st.write(f"Debug: Trying alternative API with params: {params}")
-            response2 = requests.get(url2, params=params, timeout=10)
-            st.write(f"Debug: Alternative API response status: {response2.status_code}")
-            
-            if response2.status_code == 200:
-                data2 = response2.json()
-                if 'data' in data2 and data2['data']:
-                    df = pd.DataFrame(data2['data'])
-                    df['tradingDate'] = pd.to_datetime(df['tradingDate'])
-                    
-                    if end_date:
-                        target_date = pd.to_datetime(end_date)
-                        df = df[df['tradingDate'] <= target_date]
-                        st.write(f"Debug: Filtered to {len(df)} records up to {end_date}")
-                    
-                    st.write(f"Debug: Got {len(df)} price records for {ticker} from alternative API")
-                    return df
-            
-            st.warning(f"Both APIs failed for {ticker}")
+        response = requests.get(url, params=params, timeout=10)
+        if response.status_code != 200:
+            st.warning(f"API failed for {ticker}: {response.status_code}")
             return pd.DataFrame()
-            
+        data = response.json()
+        if 'data' in data and data['data']:
+            df = pd.DataFrame(data['data'])
+            df['tradingDate'] = pd.to_datetime(df['tradingDate'])
+            return df
+        else:
+            st.warning(f"No data for {ticker}")
+            return pd.DataFrame()
     except Exception as e:
         st.warning(f"Could not fetch price data for {ticker}: {str(e)}")
         return pd.DataFrame()
@@ -296,12 +257,11 @@ def get_quarter_end_prices(tickers, quarter):
         st.write(f"Debug: Fetching quarter-end price for {ticker}")
         price_data = fetch_historical_price(ticker, end_date)
         if not price_data.empty:
-            # Get the closest price to the quarter end date (last available price)
+            # Get the closest price to the quarter end date
             price_data = price_data.sort_values('tradingDate')
             latest_price = price_data.iloc[-1]['close']
-            latest_date = price_data.iloc[-1]['tradingDate']
             prices[ticker] = latest_price
-            st.write(f"Debug: {ticker} quarter-end price: {latest_price} on {latest_date}")
+            st.write(f"Debug: {ticker} quarter-end price: {latest_price}")
         else:
             prices[ticker] = None
             st.write(f"Debug: No quarter-end price data for {ticker}")
@@ -392,14 +352,8 @@ def display_prop_book_table():
     if selected_quarters and 'Quarter' in df_book.columns:
         filtered_df = filtered_df[filtered_df['Quarter'].isin(selected_quarters)]
 
-    # Get the latest quarter for additional calculations (chronologically)
-    if selected_quarters:
-        # Sort selected quarters chronologically and get the last (latest) one
-        sorted_selected = sort_quarters_by_date(selected_quarters)
-        latest_quarter = sorted_selected[-1]
-    else:
-        # If no quarters selected, use the chronologically latest from all quarters
-        latest_quarter = quarters[-1]
+    # Get the latest quarter for additional calculations
+    latest_quarter = max(selected_quarters) if selected_quarters else quarters[-1]
     
     # Display the prop book table with additional columns
     st.subheader(f"{selected_brokers} Prop Book")
