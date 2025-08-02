@@ -74,7 +74,7 @@ def get_close_price(df: pd.DataFrame, target_date: str = None):
     if df.empty:
         return None
     if target_date:
-        target = pd.to_datetime(target_date)
+        target = pd.to_datetime(target_date).tz_localize('UTC')
         df2 = df[df['tradingDate'] <= target]
         if df2.empty:
             return None
