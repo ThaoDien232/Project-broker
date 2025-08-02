@@ -16,7 +16,8 @@ def sort_quarters_by_date(quarters):
     def quarter_sort_key(quarter):
         try:
             # Extract quarter number and year from format like "1Q25", "4Q24"
-            q_num = int(quarter[0]), year = int(quarter[2:])  # First character is quarter number # Characters after 'Q' are year
+            q_num = int(quarter[0]) 
+            year = int(quarter[2:])  # First character is quarter number # Characters after 'Q' are year
             full_year = 2000 + year if year < 50 else 1900 + year
             return full_year * 100 + q_num # Convert to sortable format: year * 100 + quarter
         except:
