@@ -101,6 +101,24 @@ def get_current_prices(tickers):
             prices[ticker] = get_close_price(price_df)
     return prices
 
+def calculate_profit_loss(df, quarter_prices, current_prices, quarter):
+    """Calculate profit/loss from quarter-end to current prices"""
+    df_calc = df.copy()
+    # Add quarter-end price column
+    df_calc['Quarter_End_Price'] = df_calc['Ticker'].map(quarter_prices)
+    df_calc['Current_Price'] = df_calc['Ticker'].map(current_prices)
+    # Calculate volume using quarter-end prices (volume at quarter end)
+    df_calc['Volume'] = df_calc.apply(lambda row: 
+        0 if row['Ticker'].upper() == 'OTHERS' or pd.isna(row['Quarter_End_Price']) or row['Quarter_End_Price'] == 0
+        else row['FVTPL value'] / row['Quarter_End_Price'], axis=1)
+    # Calculate quarter-end market value
+    df_calc['Quarter_End_Market_Value'] = df_calc['Volume'] * df_calc['Quarter_End_Price'].fillna(0)
+    # Calculate current market value using the same volume but current prices
+    df_calc['Current_Market_Value'] = df_calc['Volume'] * df_calc['Current_Price'].fillna(0)
+    # Calculate profit/loss from quarter-end to current (not vs FVTPL value)
+    df_calc['Profit_Loss'] = df_calc['Current_Market_Value'] - df_calc['Quarter_End_Market_Value']
+    df_calc['Profit_Loss_Pct']
+    
 def formatted_table(df, latest_quarter):
     if df.empty:
         return pd.DataFrame()
@@ -120,6 +138,11 @@ def formatted_table(df, latest_quarter):
     quarter_columns = sort_quarters_by_date(list(pivot_table.columns))
     pivot_table = pivot_table[quarter_columns]
     tickers = [t for t in pivot_table.index.tolist() if t.upper() != 'OTHERS']
+    # --- Fix: Check if latest_quarter is in columns ---
+    if latest_quarter not in pivot_table.columns:
+        st.error(f"Selected quarter '{latest_quarter}' not found in data columns: {list(pivot_table.columns)}")
+        return pd.DataFrame()
+    # --- End fix ---
     if latest_quarter in pivot_table.columns and tickers:
          quarter_prices = get_quarter_end_prices(tickers, latest_quarter)
          current_prices = get_current_prices(tickers)
