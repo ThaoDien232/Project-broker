@@ -117,6 +117,7 @@ def calculate_profit_loss(df, quarter_prices, current_prices, quarter):
     df_calc['Current_Market_Value'] = df_calc['Volume'] * df_calc['Current_Price'].fillna(0)
     # Calculate profit/loss from quarter-end to current (not vs FVTPL value)
     df_calc['Profit_Loss'] = df_calc['Current_Market_Value'] - df_calc['Quarter_End_Market_Value']
+    df_calc['Total_Profit_Loss'] = df_calc['Profit_Loss'].sum()
     df_calc['Profit_Loss_Pct'] = df_calc.apply(lambda row:
         0 if row['Quarter_End_Market_Value'] == 0 else (row['Profit_Loss'] / row['Quarter_End_Market_Value'] * 100), axis=1).round(1)
     return df_calc
@@ -160,13 +161,26 @@ def formatted_table(df, latest_quarter):
         others_row = pivot_table.loc[['Others']]
         other_rows = pivot_table.drop('Others')
         pivot_table = pd.concat([other_rows, others_row])
+    # --- Add Total row at the end ---
+    total_row = {}
+    # Sum the latest quarter value column
+    total_row[latest_quarter] = pivot_table[latest_quarter].sum() if latest_quarter in pivot_table.columns else 0
+    # Sum the profit/loss column
+    pl_col = f"{latest_quarter}_Profit_Loss"
+    total_row[pl_col] = pivot_table[pl_col].sum() if pl_col in pivot_table.columns else 0
+    # Fill other columns with empty string
+    for col in pivot_table.columns:
+        if col not in total_row:
+            total_row[col] = ''
+    total_df = pd.DataFrame([total_row], index=["Total"])
+    pivot_table = pd.concat([pivot_table, total_df])
     # --- Format numbers and percentages ---
     formatted_table = pivot_table.copy()
     for col in formatted_table.columns:
         if 'Pct' in str(col) or 'percent' in str(col).lower():
-            formatted_table[col] = formatted_table[col].apply(lambda x: f"{x:,.1f}%" if pd.notnull(x) else "0.0%")
+            formatted_table[col] = formatted_table[col].apply(lambda x: f"{x:,.1f}%" if pd.notnull(x) and x != '' else "")
         else:
-            formatted_table[col] = formatted_table[col].apply(lambda x: f"{x:,.1f}" if pd.notnull(x) else "0.0")
+            formatted_table[col] = formatted_table[col].apply(lambda x: f"{x:,.1f}" if pd.notnull(x) and x != '' else "")
     return formatted_table
 
 st.title("Prop Book Dashboard")
