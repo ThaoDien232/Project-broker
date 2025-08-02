@@ -147,15 +147,10 @@ def formatted_table(df, latest_quarter, selected_quarters=None):
             pivot_table[q] = 0
     pivot_table = pivot_table[all_quarters]
     tickers = [t for t in pivot_table.index.tolist() if t.upper() != 'OTHERS']
-    # --- Fix: Check if latest_quarter is in columns ---
-    if latest_quarter not in pivot_table.columns:
-        st.error(f"Selected quarter '{latest_quarter}' not found in data columns: {list(pivot_table.columns)}")
-        return pd.DataFrame()
-    # --- End fix ---
+    # Only add profit/loss columns for the latest quarter
     if latest_quarter in pivot_table.columns and tickers:
         quarter_prices = get_quarter_end_prices(tickers, latest_quarter)
         current_prices = get_current_prices(tickers)
-        # Use your function to get a DataFrame with profit/loss results
         temp_df = pd.DataFrame({'Ticker': tickers})
         temp_df['FVTPL value'] = [pivot_table.at[t, latest_quarter] for t in tickers]
         results = calculate_profit_loss(temp_df, quarter_prices, current_prices, latest_quarter)
