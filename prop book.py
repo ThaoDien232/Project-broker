@@ -222,7 +222,7 @@ def display_prop_book_table():
     st.subheader(f"{selected_brokers} Prop Book")
     
     with st.spinner("Loading data and calculating price changes..."):
-        formatted_df = formatted_table(filtered_df, latest_quarter, selected_quarters)
+        formatted_df = formatted_table(filtered_df, selected_quarters)
         st.dataframe(formatted_df, use_container_width=True)
 
 # Main application
