@@ -13,19 +13,15 @@ def load_data():
         return pd.DataFrame()
 df_book = load_data()
 def sort_quarters_by_date(quarters):
-    def quarter_sort_key(quarter):
+    def key(q):
         try:
-            # Extract quarter number and year from format like "1Q25", "4Q24"
-            q_num = int(quarter[0]) 
-            year = int(quarter[2:])  # First character is quarter number # Characters after 'Q' are year
+            q_num = int(q[0])
+            year = int(q[2:])
             full_year = 2000 + year if year < 50 else 1900 + year
-            return full_year * 100 + q_num # Convert to sortable format: year * 100 + quarter
-        except:
-            return quarter # If format doesn't match, return original for regular sorting
-    return sorted(quarters, key=quarter_sort_key)
-
-def get_data(df, ticker, quarters):
-    return df[(df['Ticker'] == ticker) & (df['Quarter'].isin(quarters))].copy()
+            return full_year * 10 + q_num
+        except Exception:
+            return q
+    return sorted(quarters, key=key)
 
 def fetch_historical_price(ticker: str) -> pd.DataFrame:
     """
@@ -65,7 +61,7 @@ def fetch_historical_price(ticker: str) -> pd.DataFrame:
     except Exception as e:
         print(f"Error fetching data: {e}")
         return pd.DataFrame()
-    
+
 def get_close_price(df: pd.DataFrame, target_date: str = None):
     """
     Get closing price on or before target_date.
