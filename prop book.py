@@ -214,9 +214,7 @@ def display_prop_book_table():
     if selected_quarters and 'Quarter' in df_book.columns:
         filtered_df = filtered_df[filtered_df['Quarter'].isin(selected_quarters)]
 
-    st.write("Filtered DataFrame Preview:")
-    st.dataframe(filtered_df)
-    st.write("Quarters in filtered data:", filtered_df['Quarter'].unique())
+    st.dataframe(df_book[df_book['Quarter'] != '2Q25'])
 
     # Get the latest quarter chronologically from the selected quarters ---
     selected_quarters_sorted = sort_quarters_by_date(selected_quarters)
