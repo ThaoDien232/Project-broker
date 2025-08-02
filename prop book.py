@@ -133,9 +133,6 @@ def formatted_table(df, latest_quarter, selected_quarters=None):
         all_quarters = sort_quarters_by_date(df['Quarter'].unique())
     else:
         all_quarters = sort_quarters_by_date(selected_quarters)
-        st.write("Filtered DataFrame Preview:")
-        st.dataframe(filtered_df)
-        st.write("Quarters in filtered data:", filtered_df['Quarter'].unique())
     # Create pivot table for the selected broker, then reindex columns to ensure all selected quarters are present
     pivot_table = df.pivot_table(
         index='Ticker',
@@ -146,7 +143,6 @@ def formatted_table(df, latest_quarter, selected_quarters=None):
     )
     # Reindex columns to ensure all selected quarters are present, fill missing with 0
     pivot_table = pivot_table.reindex(columns=all_quarters, fill_value=0)
-    st.write("Pivot table preview:", pivot_table)
     tickers = [t for t in pivot_table.index.tolist() if t.upper() != 'OTHERS']
     # Only add profit/loss columns for the latest quarter
     if latest_quarter in pivot_table.columns and tickers:
@@ -217,6 +213,10 @@ def display_prop_book_table():
         
     if selected_quarters and 'Quarter' in df_book.columns:
         filtered_df = filtered_df[filtered_df['Quarter'].isin(selected_quarters)]
+
+    st.write("Filtered DataFrame Preview:")
+    st.dataframe(filtered_df)
+    st.write("Quarters in filtered data:", filtered_df['Quarter'].unique())
 
     # Get the latest quarter chronologically from the selected quarters ---
     selected_quarters_sorted = sort_quarters_by_date(selected_quarters)
