@@ -118,25 +118,23 @@ def calculate_profit_loss(df, quarter_prices, current_prices, quarter):
     # Calculate profit/loss from quarter-end to current (not vs FVTPL value)
     df_calc['Profit_Loss'] = df_calc['Current_Market_Value'] - df_calc['Quarter_End_Market_Value']
     df_calc['Profit_Loss_Pct'] = df_calc.apply(lambda row:
-        0 if row['Quarter_End_Market_Value'] == 0 else (row['Profit_Loss'] / row['Quarter_End_Market_Value'] * 100), axis=1).round(2)
+        0 if row['Quarter_End_Market_Value'] == 0 else (row['Profit_Loss'] / row['Quarter_End_Market_Value'] * 100), axis=1).round(1)
     return df_calc
     
 def formatted_table(df, latest_quarter):
     if df.empty:
         return pd.DataFrame()
-    
     # Get numeric columns (excluding Ticker, Broker, Quarter)
     numeric_cols = df.select_dtypes(include=['number']).columns.tolist()
     value_col = numeric_cols[0] if len(numeric_cols) == 1 else st.selectbox("Select value column:", numeric_cols)
-        
-        # Create pivot table with Ticker as index and Quarter as columns
+    # Create pivot table with Ticker as index and Quarter as columns
     pivot_table = df.pivot_table(
-            index='Ticker',
-            columns='Quarter',
-            values=value_col,
-            aggfunc='sum',
-            fill_value=0
-        )
+        index='Ticker',
+        columns='Quarter',
+        values=value_col,
+        aggfunc='sum',
+        fill_value=0
+    )
     quarter_columns = sort_quarters_by_date(list(pivot_table.columns))
     pivot_table = pivot_table[quarter_columns]
     tickers = [t for t in pivot_table.index.tolist() if t.upper() != 'OTHERS']
@@ -146,18 +144,30 @@ def formatted_table(df, latest_quarter):
         return pd.DataFrame()
     # --- End fix ---
     if latest_quarter in pivot_table.columns and tickers:
-         quarter_prices = get_quarter_end_prices(tickers, latest_quarter)
-         current_prices = get_current_prices(tickers)
-            # Use your function to get a DataFrame with profit/loss results
-    temp_df = pd.DataFrame({'Ticker': tickers})
-    temp_df['FVTPL value'] = [pivot_table.at[t, latest_quarter] for t in tickers]
-    results = calculate_profit_loss(temp_df, quarter_prices, current_prices, latest_quarter)
+        quarter_prices = get_quarter_end_prices(tickers, latest_quarter)
+        current_prices = get_current_prices(tickers)
+        # Use your function to get a DataFrame with profit/loss results
+        temp_df = pd.DataFrame({'Ticker': tickers})
+        temp_df['FVTPL value'] = [pivot_table.at[t, latest_quarter] for t in tickers]
+        results = calculate_profit_loss(temp_df, quarter_prices, current_prices, latest_quarter)
         # Map results into pivot_table
-    profit_dict = results.set_index('Ticker')['Profit_Loss'].to_dict()
-    change_dict = results.set_index('Ticker')['Profit_Loss_Pct'].to_dict()
-    pivot_table[f"{latest_quarter}_Profit_Loss"] = pivot_table.index.map(profit_dict)
-    pivot_table[f"{latest_quarter}_Profit_Loss_Pct"] = pivot_table.index.map(change_dict)        
-    return pivot_table
+        profit_dict = results.set_index('Ticker')['Profit_Loss'].to_dict()
+        change_dict = results.set_index('Ticker')['Profit_Loss_Pct'].to_dict()
+        pivot_table[f"{latest_quarter}_Profit_Loss"] = pivot_table.index.map(profit_dict)
+        pivot_table[f"{latest_quarter}_Profit_Loss_Pct"] = pivot_table.index.map(change_dict)
+    # --- Sort 'Others' to the last row ---
+    if 'Others' in pivot_table.index:
+        others_row = pivot_table.loc[['Others']]
+        other_rows = pivot_table.drop('Others')
+        pivot_table = pd.concat([other_rows, others_row])
+    # --- Format numbers and percentages ---
+    formatted_table = pivot_table.copy()
+    for col in formatted_table.columns:
+        if 'Pct' in str(col) or 'percent' in str(col).lower():
+            formatted_table[col] = formatted_table[col].apply(lambda x: f"{x:,.1f}%" if pd.notnull(x) else "0.0%")
+        else:
+            formatted_table[col] = formatted_table[col].apply(lambda x: f"{x:,.1f}" if pd.notnull(x) else "0.0")
+    return formatted_table
 
 st.title("Prop Book Dashboard")
 
