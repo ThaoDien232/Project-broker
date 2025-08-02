@@ -231,15 +231,7 @@ def fetch_historical_price(ticker: str, end_date: str = None) -> pd.DataFrame:
 def get_quarter_end_prices(tickers, quarter):
     """Get prices at the end of a specific quarter"""
     prices = {}
-    
-    # Convert quarter to end date (approximate)
-    quarter_end_dates = {
-        "1Q": "-03-31",
-        "2Q": "-06-30", 
-        "3Q": "-09-30",
-        "4Q": "-12-31"
-    }
-    
+
     # Extract year and quarter from format like "1Q25", "4Q24"
     q_part = quarter[:2]  # "1Q", "2Q", etc.
     year_part = quarter[2:]  # "25", "24", etc. 
@@ -247,24 +239,12 @@ def get_quarter_end_prices(tickers, quarter):
     full_year = 2000 + int(year_part)
     end_date = str(full_year) + quarter_end_dates.get(q_part, "-12-31")
     
-    st.write(f"Debug: Looking for prices at quarter end: {end_date}")
-    
     for ticker in tickers:
         if ticker.upper() == "OTHERS":
-            prices[ticker] = 0  # Set Others to 0 as requested
-            continue
-            
-        st.write(f"Debug: Fetching quarter-end price for {ticker}")
-        price_data = fetch_historical_price(ticker, end_date)
-        if not price_data.empty:
-            # Get the closest price to the quarter end date
-            price_data = price_data.sort_values('tradingDate')
-            latest_price = price_data.iloc[-1]['close']
-            prices[ticker] = latest_price
-            st.write(f"Debug: {ticker} quarter-end price: {latest_price}")
+            prices[ticker] = np.nan
         else:
-            prices[ticker] = None
-            st.write(f"Debug: No quarter-end price data for {ticker}")
+            price_df = fetch_historical_price(ticker, end_date)
+            prices[ticker] = get_price_for_date(price_df, pd.to_datetime(end_date))
     return prices
 
 @st.cache_data
