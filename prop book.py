@@ -238,14 +238,28 @@ def get_quarter_end_prices(tickers, quarter):
     year_part = quarter[2:]  # "25", "24", etc. 
     # Convert 2-digit year to 4-digit year
     full_year = 2000 + int(year_part)
-    end_date = str(full_year) + {"1Q":"-03-31", "2Q":"-06-30", "3Q":"-09-30", "4Q":"-12-31"}[q_part]
-    
+    end_date_str = str(full_year) + {"1Q": "-03-31", "2Q": "-06-30", "3Q": "-09-30", "4Q": "-12-31"}[q_part]
+    end_date = pd.to_datetime(end_date_str)
+    end_date_unix = int(end_date.timestamp())  # seconds since epoch
+
     for ticker in tickers:
         if ticker.upper() == "OTHERS":
             prices[ticker] = np.nan
         else:
-            price_df = fetch_historical_price(ticker, end_date)
-            prices[ticker] = get_quarter_end_prices(price_df, pd.to_datetime(end_date))
+            # Fetch all data up to the quarter end date
+            price_df = fetch_historical_price(ticker)
+            if not price_df.empty and 'tradingDate' in price_df.columns:
+                # Filter for dates <= end_date
+                price_df = price_df[price_df['tradingDate'] <= end_date]
+                if not price_df.empty:
+                    # Get the last available price before or on end_date
+                    last_row = price_df.iloc[-1]
+                    close_price = last_row['close'] if 'close' in last_row else np.nan
+                    prices[ticker] = close_price
+                else:
+                    prices[ticker] = np.nan
+            else:
+                prices[ticker] = np.nan
     return prices
 
 @st.cache_data
