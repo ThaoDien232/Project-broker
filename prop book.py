@@ -214,9 +214,9 @@ def display_prop_book_table():
     if selected_quarters and 'Quarter' in df_book.columns:
         filtered_df = filtered_df[filtered_df['Quarter'].isin(selected_quarters)]
 
-    # Get the latest quarter chronologically from the filtered data ---
-    filtered_quarters = sort_quarters_by_date(filtered_df['Quarter'].unique())
-    latest_quarter = filtered_quarters[-1] if filtered_quarters else None
+    # Get the latest quarter chronologically from the selected quarters ---
+    selected_quarters_sorted = sort_quarters_by_date(selected_quarters)
+    latest_quarter = selected_quarters_sorted[-1] if selected_quarters_sorted else None
     
     # Display the prop book table with additional columns
     st.subheader(f"{selected_brokers} Prop Book")
