@@ -349,4 +349,4 @@ def main():
     display_prop_book_table()
 
 if __name__ == "__main__":
-
+    main ()
