@@ -1,49 +1,134 @@
 import streamlit as st
 import pandas as pd
-import os
 import requests
 from datetime import datetime
-import numpy as np
 
 # Load the prop book data with error handling
 @st.cache_data
 def load_data():
     try:
-        if os.path.exists("Prop book.xlsx"):
-            return pd.read_excel("Prop book.xlsx")
-        else:
-            st.error("Excel file 'Prop book.xlsx' not found. Please ensure it's in the same folder as this app.")
-            return pd.DataFrame()
+        return pd.read_excel("Prop book.xlsx")
     except Exception as e:
-        st.error(f"Error loading Excel file: {str(e)}")
+        st.error(f"Error loading Excel file: {e}")
         return pd.DataFrame()
-
 df_book = load_data()
-
 def sort_quarters_by_date(quarters):
-    """Sort quarters in chronological order (e.g., 4Q24, 1Q25, 2Q25)"""
     def quarter_sort_key(quarter):
         try:
             # Extract quarter number and year from format like "1Q25", "4Q24"
-            q_num = int(quarter[0])  # First character is quarter number
-            year = int(quarter[2:])  # Characters after 'Q' are year
-            
-            # Convert 2-digit year to 4-digit year (assuming 20xx)
-            if year < 50:  # Assume years 00-49 are 2000-2049
-                full_year = 2000 + year
-            else:  # Assume years 50-99 are 1950-1999
-                full_year = 1900 + year
-            
-            # Convert to sortable format: year * 100 + quarter
-            return full_year * 100 + q_num
+            q_num = int(quarter[0]), year = int(quarter[2:])  # First character is quarter number # Characters after 'Q' are year
+            full_year = 2000 + year if year < 50 else 1900 + year
+            return full_year * 100 + q_num # Convert to sortable format: year * 100 + quarter
         except:
-            # If format doesn't match, return original for regular sorting
-            return quarter
-    
+            return quarter # If format doesn't match, return original for regular sorting
     return sorted(quarters, key=quarter_sort_key)
 
 def get_data(df, ticker, quarters):
     return df[(df['Ticker'] == ticker) & (df['Quarter'].isin(quarters))].copy()
+
+def fetch_historical_price(ticker: str) -> pd.DataFrame:
+    """
+    Fetch daily stock prices from TCBS API for the given ticker.
+    Returns DataFrame with 'tradingDate', 'open', 'high', 'low', 'close', 'volume'.
+    """
+    url = "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term"
+    params = {
+        "ticker": ticker,
+        "type": "stock",
+        "resolution": "D",
+        "from": "0",
+        "to": str(int(datetime.now().timestamp()))
+    }
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "Accept": "application/json"
+    }
+    try:
+        response = requests.get(url, params=params, headers=headers, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+        if 'data' in data and data['data']:
+            df = pd.DataFrame(data['data'])
+            # Convert tradingDate to datetime (ISO or ms)
+            if 'tradingDate' in df.columns:
+                if df['tradingDate'].dtype == 'object' and df['tradingDate'].str.contains('T').any():
+                    df['tradingDate'] = pd.to_datetime(df['tradingDate'])
+                else:
+                    df['tradingDate'] = pd.to_datetime(df['tradingDate'], unit='ms')
+            # Only keep relevant columns
+            keep = ['tradingDate', 'open', 'high', 'low', 'close', 'volume']
+            return df[[col for col in keep if col in df.columns]]
+        else:
+            print("No data found in response")
+            return pd.DataFrame()
+    except Exception as e:
+        print(f"Error fetching data: {e}")
+        return pd.DataFrame()
+    
+def get_close_price(df: pd.DataFrame, target_date: str = None):
+    """
+    Get closing price on or before target_date.
+    If target_date is None, get the latest available price.
+    """
+    if df.empty:
+        return None
+    if target_date:
+        target = pd.to_datetime(target_date)
+        df2 = df[df['tradingDate'] <= target]
+        if df2.empty:
+            return None
+        return df2.iloc[-1]['close']
+    else:
+        return df.iloc[-1]['close']
+
+def get_quarter_end_prices(tickers, quarter):
+    q_map = {"1Q":"-03-31", "2Q":"-06-30", "3Q":"-09-30", "4Q":"-12-31"}
+    q_part, y_part = quarter[:2], quarter[2:]
+    date_str = f"{2000+int(y_part)}{q_map.get(q_part, '-12-31')}"
+    prices = {}
+    for ticker in tickers:
+        if ticker.upper() == "OTHERS":
+            prices[ticker] = None
+        else:
+            price_df = fetch_historical_price(ticker)
+            prices[ticker] = get_close_price(price_df, date_str)
+    return prices
+
+def get_current_prices(tickers):
+    prices = {}
+    for ticker in tickers:
+        if ticker.upper() == "OTHERS":
+            prices[ticker] = 0
+        else:
+            price_df = fetch_historical_price(ticker)
+            prices[ticker] = get_close_price(price_df)
+    return prices
+
+def calculate_profit_loss(df, quarter_prices, current_prices, quarter):
+    """Calculate profit/loss from quarter-end to current prices"""
+    df_calc = df.copy()
+    
+    # Add quarter-end price column
+    df_calc['Quarter_End_Price'] = df_calc['Ticker'].map(quarter_prices)
+    df_calc['Current_Price'] = df_calc['Ticker'].map(current_prices)
+    
+    # Calculate volume using quarter-end prices (volume at quarter end)
+    df_calc['Volume'] = df_calc.apply(lambda row: 
+        0 if row['Ticker'].upper() == 'OTHERS' or pd.isna(row['Quarter_End_Price']) or row['Quarter_End_Price'] == 0
+        else row['FVTPL value'] / row['Quarter_End_Price'], axis=1)
+    
+    # Calculate quarter-end market value
+    df_calc['Quarter_End_Market_Value'] = df_calc['Volume'] * df_calc['Quarter_End_Price'].fillna(0)
+    
+    # Calculate current market value using the same volume but current prices
+    df_calc['Current_Market_Value'] = df_calc['Volume'] * df_calc['Current_Price'].fillna(0)
+    
+    # Calculate profit/loss from quarter-end to current (not vs FVTPL value)
+    df_calc['Profit_Loss'] = df_calc['Current_Market_Value'] - df_calc['Quarter_End_Market_Value']
+    df_calc['Profit_Loss_Pct'] = df_calc.apply(lambda row:
+        0 if row['Quarter_End_Market_Value'] == 0 else (row['Profit_Loss'] / row['Quarter_End_Market_Value'] * 100), axis=1).round(2)
+    
+    return df_calc
 
 def formatted_table(df, latest_quarter):
     if df.empty:
@@ -188,124 +273,6 @@ def formatted_table(df, latest_quarter):
         return formatted_table
     else:
         return df
-
-def fetch_historical_price(ticker: str, end_date: str = None) -> pd.DataFrame:
-    """Fetch stock historical price and volume data from TCBS API"""
-    
-    # Skip "Others" ticker
-    if ticker.upper() == "OTHERS":
-        return pd.DataFrame()
-    
-    # TCBS API endpoint for historical data
-    url = "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term"
-    
-    # Parameters for stock data
-    params = {
-        "ticker": ticker,
-        "type": "stock",
-        "resolution": "D",  # Daily data
-    }
-    
-    # Add end date if provided
-    if end_date:
-        params["to"] = end_date
-    
-    try:
-        response = requests.get(url, params=params, timeout=10)
-        if response.status_code != 200:
-            st.warning(f"API failed for {ticker}: {response.status_code}")
-            return pd.DataFrame()
-        data = response.json()
-        if 'data' in data and data['data']:
-            df = pd.DataFrame(data['data'])
-            df['tradingDate'] = pd.to_datetime(df['tradingDate'])
-            return df
-        else:
-            st.warning(f"No data for {ticker}")
-            return pd.DataFrame()
-    except Exception as e:
-        st.warning(f"Could not fetch price data for {ticker}: {str(e)}")
-        return pd.DataFrame()
-
-
-@st.cache_data
-def get_price_for_date(price_df, target_date):
-    """
-    Return the closing price for the closest date <= target_date.
-    """
-    if price_df.empty:
-        return np.nan
-    price_df = price_df[price_df['tradingDate'] <= pd.to_datetime(target_date)]
-    if price_df.empty:
-        return np.nan
-    return price_df.iloc[-1]['close']
-
-def get_quarter_end_prices(tickers, quarter):
-    """Get prices at the end of a specific quarter"""
-    prices = {}
-
-    # Extract year and quarter from format like "1Q25", "4Q24"
-    q_part = quarter[:2]  # "1Q", "2Q", etc.
-    year_part = quarter[2:]  # "25", "24", etc. 
-    # Convert 2-digit year to 4-digit year
-    full_year = 2000 + int(year_part)
-    end_date = str(full_year) + {"1Q":"-03-31", "2Q":"-06-30", "3Q":"-09-30", "4Q":"-12-31"}[q_part]
-    
-    
-    for ticker in tickers:
-        if ticker.upper() == "OTHERS":
-            prices[ticker] = np.nan
-        else:
-            price_df = fetch_historical_price(ticker, end_date)
-            prices[ticker] = get_price_for_date(price_df, end_date)
-    return prices
-
-@st.cache_data
-def get_current_prices(tickers):
-    """Get current/latest prices for multiple tickers"""
-    prices = {}
-    for ticker in tickers:
-        if ticker.upper() == "OTHERS":
-            prices[ticker] = 0  # Set Others to 0 as requested
-            continue
-            
-        st.write(f"Debug: Fetching current price for {ticker}")
-        price_data = fetch_historical_price(ticker)  # No end_date = latest data
-        if not price_data.empty:
-            # Get the most recent closing price
-            latest_price = price_data.iloc[-1]['close']
-            prices[ticker] = latest_price
-            st.write(f"Debug: {ticker} current price: {latest_price}")
-        else:
-            prices[ticker] = None
-            st.write(f"Debug: No current price data for {ticker}")
-    return prices
-
-def calculate_profit_loss(df, quarter_prices, current_prices, quarter):
-    """Calculate profit/loss from quarter-end to current prices"""
-    df_calc = df.copy()
-    
-    # Add quarter-end price column
-    df_calc['Quarter_End_Price'] = df_calc['Ticker'].map(quarter_prices)
-    df_calc['Current_Price'] = df_calc['Ticker'].map(current_prices)
-    
-    # Calculate volume using quarter-end prices (volume at quarter end)
-    df_calc['Volume'] = df_calc.apply(lambda row: 
-        0 if row['Ticker'].upper() == 'OTHERS' or pd.isna(row['Quarter_End_Price']) or row['Quarter_End_Price'] == 0
-        else row['FVTPL value'] / row['Quarter_End_Price'], axis=1)
-    
-    # Calculate quarter-end market value
-    df_calc['Quarter_End_Market_Value'] = df_calc['Volume'] * df_calc['Quarter_End_Price'].fillna(0)
-    
-    # Calculate current market value using the same volume but current prices
-    df_calc['Current_Market_Value'] = df_calc['Volume'] * df_calc['Current_Price'].fillna(0)
-    
-    # Calculate profit/loss from quarter-end to current (not vs FVTPL value)
-    df_calc['Profit_Loss'] = df_calc['Current_Market_Value'] - df_calc['Quarter_End_Market_Value']
-    df_calc['Profit_Loss_Pct'] = df_calc.apply(lambda row:
-        0 if row['Quarter_End_Market_Value'] == 0 else (row['Profit_Loss'] / row['Quarter_End_Market_Value'] * 100), axis=1).round(2)
-    
-    return df_calc
 
 st.title("Prop Book Dashboard")
 
