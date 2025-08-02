@@ -133,6 +133,9 @@ def formatted_table(df, latest_quarter, selected_quarters=None):
         all_quarters = sort_quarters_by_date(df['Quarter'].unique())
     else:
         all_quarters = sort_quarters_by_date(selected_quarters)
+st.write("Filtered DataFrame Preview:")
+st.dataframe(filtered_df)
+st.write("Quarters in filtered data:", filtered_df['Quarter'].unique())
     # Create pivot table for the selected broker, then reindex columns to ensure all selected quarters are present
     pivot_table = df.pivot_table(
         index='Ticker',
@@ -222,7 +225,7 @@ def display_prop_book_table():
     st.subheader(f"{selected_brokers} Prop Book")
     
     with st.spinner("Loading data and calculating price changes..."):
-        formatted_df = formatted_table(filtered_df, selected_quarters)
+        formatted_df = formatted_table(filtered_df, latest_quarter, selected_quarters)
         st.dataframe(formatted_df, use_container_width=True)
 
 # Main application
