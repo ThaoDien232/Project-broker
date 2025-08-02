@@ -198,16 +198,12 @@ def fetch_historical_price(ticker: str, end_date: str = None) -> pd.DataFrame:
     # TCBS API endpoint for historical data
     url = "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term"
     
-    # Parameters for stock data
+    # Parameters for stock data - don't use 'to' parameter as it may cause issues
     params = {
         "ticker": ticker,
         "type": "stock",
         "resolution": "D",  # Daily data
     }
-    
-    # Add end date if provided
-    if end_date:
-        params["to"] = end_date
     
     st.write(f"Debug: API call for {ticker} with params: {params}")
     
@@ -222,6 +218,14 @@ def fetch_historical_price(ticker: str, end_date: str = None) -> pd.DataFrame:
         if 'data' in data and data['data']:
             df = pd.DataFrame(data['data'])
             df['tradingDate'] = pd.to_datetime(df['tradingDate'])
+            
+            # Filter by end_date if provided
+            if end_date:
+                target_date = pd.to_datetime(end_date)
+                # Get data up to and including the target date
+                df = df[df['tradingDate'] <= target_date]
+                st.write(f"Debug: Filtered to {len(df)} records up to {end_date}")
+            
             st.write(f"Debug: Got {len(df)} price records for {ticker}")
             return df
         else:
@@ -262,11 +266,12 @@ def get_quarter_end_prices(tickers, quarter):
         st.write(f"Debug: Fetching quarter-end price for {ticker}")
         price_data = fetch_historical_price(ticker, end_date)
         if not price_data.empty:
-            # Get the closest price to the quarter end date
+            # Get the closest price to the quarter end date (last available price)
             price_data = price_data.sort_values('tradingDate')
             latest_price = price_data.iloc[-1]['close']
+            latest_date = price_data.iloc[-1]['tradingDate']
             prices[ticker] = latest_price
-            st.write(f"Debug: {ticker} quarter-end price: {latest_price}")
+            st.write(f"Debug: {ticker} quarter-end price: {latest_price} on {latest_date}")
         else:
             prices[ticker] = None
             st.write(f"Debug: No quarter-end price data for {ticker}")
