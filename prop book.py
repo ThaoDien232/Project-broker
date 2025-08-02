@@ -146,6 +146,7 @@ def formatted_table(df, latest_quarter, selected_quarters=None):
     )
     # Reindex columns to ensure all selected quarters are present, fill missing with 0
     pivot_table = pivot_table.reindex(columns=all_quarters, fill_value=0)
+    st.write("Pivot table preview:", pivot_table)
     tickers = [t for t in pivot_table.index.tolist() if t.upper() != 'OTHERS']
     # Only add profit/loss columns for the latest quarter
     if latest_quarter in pivot_table.columns and tickers:
