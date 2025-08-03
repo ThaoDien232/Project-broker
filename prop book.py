@@ -125,15 +125,12 @@ def calculate_profit_loss(df, quarter_prices, current_prices, quarter):
 def formatted_table(df, selected_quarters=None):
     if df.empty:
         return pd.DataFrame()
-    # Get numeric columns (excluding Ticker, Broker, Quarter)
     numeric_cols = df.select_dtypes(include=['number']).columns.tolist()
     value_col = numeric_cols[0] if len(numeric_cols) == 1 else st.selectbox("Select value column:", numeric_cols)
-    # Use selected quarters for columns if provided, else all in data
     if selected_quarters is None:
         all_quarters = sort_quarters_by_date(df['Quarter'].unique())
     else:
         all_quarters = sort_quarters_by_date(selected_quarters)
-    # Create pivot table for the selected broker, then reindex columns to ensure all selected quarters are present
     pivot_table = df.pivot_table(
         index='Ticker',
         columns='Quarter',
@@ -141,80 +138,71 @@ def formatted_table(df, selected_quarters=None):
         aggfunc='sum',
         fill_value=0
     )
-    # Reindex columns to ensure all selected quarters are present, fill missing with 0
     pivot_table = pivot_table.reindex(columns=all_quarters, fill_value=0)
-    tickers = [t for t in pivot_table.index.tolist() if t.upper() != 'OTHERS']
-    others_row = pivot_table.loc[['Others']] if 'Others' in pivot_table.index else None
-    pbt_row = pivot_table.loc[['PBT']] if 'PBT' in pivot_table.index else None
-
-    # --- PROFIT/LOSS: latest quarter with data per ticker ---
-    profit_dict = {}
-    change_dict = {}
-    quarter_used = {}  # For reference/display
-    for ticker in tickers:
-        # Find the latest quarter with nonzero value for this ticker
-        nonzero_quarters = [q for q in all_quarters if pivot_table.at[ticker, q] != 0]
-        if not nonzero_quarters:
-            profit_dict[ticker] = ''
-            change_dict[ticker] = ''
-            quarter_used[ticker] = ''
+    tickers = [t for t in pivot_table.index if t.upper() not in ['OTHERS', 'PBT']]
+    # --- PBT debug
+    st.write("Pivot table tickers (should include PBT):", list(pivot_table.index))
+    # --- Calculate P/L for each ticker's latest quarter
+    profit_dict, pct_dict, quarter_dict = {}, {}, {}
+    for t in tickers:
+        q_list = [q for q in all_quarters if pivot_table.at[t, q] != 0]
+        if not q_list:
+            profit_dict[t] = ''
+            pct_dict[t] = ''
+            quarter_dict[t] = ''
             continue
-        ticker_latest_q = nonzero_quarters[-1]
-        quarter_used[ticker] = ticker_latest_q
-        # Fetch prices and calculate
-        q_price = get_quarter_end_prices([ticker], ticker_latest_q)[ticker]
-        c_price = get_current_prices([ticker])[ticker]
-        fvtpl_val = pivot_table.at[ticker, ticker_latest_q]
-        if q_price and c_price and q_price != 0 and fvtpl_val != 0:
-            volume = fvtpl_val / q_price
-            market_start = volume * q_price
-            market_now = volume * c_price
-            profit = market_now - market_start
-            profit_pct = 0 if market_start == 0 else (profit / market_start * 100)
-            profit_dict[ticker] = profit
-            change_dict[ticker] = profit_pct
+        q = q_list[-1]
+        quarter_dict[t] = q
+        q_price = get_quarter_end_prices([t], q)[t]
+        c_price = get_current_prices([t])[t]
+        val = pivot_table.at[t, q]
+        if q_price and c_price and q_price != 0 and val != 0:
+            vol = val / q_price
+            p_start = vol * q_price
+            p_now = vol * c_price
+            profit = p_now - p_start
+            pct = 0 if p_start == 0 else (profit / p_start * 100)
+            profit_dict[t] = profit
+            pct_dict[t] = pct
         else:
-            profit_dict[ticker] = ''
-            change_dict[ticker] = ''
-
-    # --- Add profit/loss columns (only for tickers, not Others/PBT) ---
-    profit_col = "Profit/Loss (since ticker's latest quarter)"
-    pct_col = "% Profit/Loss (since ticker's latest quarter)"
+            profit_dict[t] = ''
+            pct_dict[t] = ''
+    profit_col = "Profit/Loss (since latest q)"
+    pct_col = "% Profit/Loss (since latest q)"
     qtr_col = "Quarter Used for P/L"
     pivot_table[profit_col] = pivot_table.index.map(lambda t: profit_dict.get(t, ''))
-    pivot_table[pct_col] = pivot_table.index.map(lambda t: change_dict.get(t, ''))
-    pivot_table[qtr_col] = pivot_table.index.map(lambda t: quarter_used.get(t, ''))
-    
-    # --- Sort 'Others' to the last row, then 'PBT' ---
+    pivot_table[pct_col] = pivot_table.index.map(lambda t: pct_dict.get(t, ''))
+    pivot_table[qtr_col] = pivot_table.index.map(lambda t: quarter_dict.get(t, ''))
+    # --- Compose table: main, others, pbt
     rows = pivot_table.index.tolist()
-    others_row = pivot_table.loc[['Others']] if 'Others' in rows else None
-    pbt_row = pivot_table.loc[['PBT']] if 'PBT' in rows else None
     main_rows = pivot_table.drop([r for r in ['Others', 'PBT'] if r in rows])
     concat_list = [main_rows]
-    if others_row is not None:
-        concat_list.append(others_row)
-    if pbt_row is not None:
-        concat_list.append(pbt_row)
+    if 'Others' in rows:
+        concat_list.append(pivot_table.loc[['Others']])
+    if 'PBT' in rows:
+        concat_list.append(pivot_table.loc[['PBT']])
     pivot_table = pd.concat(concat_list)
-    # --- Add Total row at the end, excluding 'PBT' from the sum ---
+    # --- Total row, excluding PBT/Total
+    rows_for_total = [idx for idx in pivot_table.index if idx not in ['PBT', 'Total']]
     total_row = {}
-    # Exclude 'PBT' from total calculation
-    rows_for_total = [idx for idx in pivot_table.index if idx != 'PBT' and idx != 'Total']
-    for q in pivot_table.columns:
-        if isinstance(q, str) and (q.startswith('Profit/Loss') or q.startswith('% Profit/Loss')):
-            total_row[q] = pivot_table.loc[rows_for_total, q].sum() if '%' not in q else ''
+    for col in pivot_table.columns:
+        if col in [profit_col, pct_col, qtr_col]:
+            total_row[col] = pivot_table.loc[rows_for_total, col].sum() if col == profit_col else ''
         else:
-            total_row[q] = pivot_table.loc[rows_for_total, q].sum() if q in all_quarters else ''
+            total_row[col] = pivot_table.loc[rows_for_total, col].sum()
     total_df = pd.DataFrame([total_row], index=["Total"])
     pivot_table = pd.concat([pivot_table, total_df])
-    # --- Format numbers and percentages ---
+    # --- Formatting
     formatted_table = pivot_table.copy()
     for col in formatted_table.columns:
-        if 'Pct' in str(col) or 'percent' in str(col).lower():
+        if "%" in str(col):
             formatted_table[col] = formatted_table[col].apply(lambda x: f"{x:,.1f}%" if pd.notnull(x) and x != '' else "")
+        elif "Profit/Loss" in str(col):
+            formatted_table[col] = formatted_table[col].apply(lambda x: f"{x:,.1f}" if pd.notnull(x) and x != '' else "")
         else:
             formatted_table[col] = formatted_table[col].apply(lambda x: f"{x:,.1f}" if pd.notnull(x) and x != '' else "")
     return formatted_table
+
 
 st.title("Prop Book Dashboard")
 
