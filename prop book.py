@@ -144,18 +144,47 @@ def formatted_table(df, latest_quarter, selected_quarters=None):
     # Reindex columns to ensure all selected quarters are present, fill missing with 0
     pivot_table = pivot_table.reindex(columns=all_quarters, fill_value=0)
     tickers = [t for t in pivot_table.index.tolist() if t.upper() != 'OTHERS']
-    # Only add profit/loss columns for the latest quarter
-    if latest_quarter in pivot_table.columns and tickers:
-        quarter_prices = get_quarter_end_prices(tickers, latest_quarter)
-        current_prices = get_current_prices(tickers)
-        temp_df = pd.DataFrame({'Ticker': tickers})
-        temp_df['FVTPL value'] = [pivot_table.at[t, latest_quarter] for t in tickers]
-        results = calculate_profit_loss(temp_df, quarter_prices, current_prices, latest_quarter)
-        # Map results into pivot_table
-        profit_dict = results.set_index('Ticker')['Profit_Loss'].to_dict()
-        change_dict = results.set_index('Ticker')['Profit_Loss_Pct'].to_dict()
-        pivot_table[f"Profit/Loss since {latest_quarter}"] = pivot_table.index.map(profit_dict)
-        pivot_table[f"% Profit/Loss since {latest_quarter}"] = pivot_table.index.map(change_dict)
+    others_row = pivot_table.loc[['Others']] if 'Others' in pivot_table.index else None
+    pbt_row = pivot_table.loc[['PBT']] if 'PBT' in pivot_table.index else None
+
+    # --- PROFIT/LOSS: latest quarter with data per ticker ---
+    profit_dict = {}
+    change_dict = {}
+    quarter_used = {}  # For reference/display
+    for ticker in tickers:
+        # Find the latest quarter with nonzero value for this ticker
+        nonzero_quarters = [q for q in all_quarters if pivot_table.at[ticker, q] != 0]
+        if not nonzero_quarters:
+            profit_dict[ticker] = ''
+            change_dict[ticker] = ''
+            quarter_used[ticker] = ''
+            continue
+        ticker_latest_q = nonzero_quarters[-1]
+        quarter_used[ticker] = ticker_latest_q
+        # Fetch prices and calculate
+        q_price = get_quarter_end_prices([ticker], ticker_latest_q)[ticker]
+        c_price = get_current_prices([ticker])[ticker]
+        fvtpl_val = pivot_table.at[ticker, ticker_latest_q]
+        if q_price and c_price and q_price != 0 and fvtpl_val != 0:
+            volume = fvtpl_val / q_price
+            market_start = volume * q_price
+            market_now = volume * c_price
+            profit = market_now - market_start
+            profit_pct = 0 if market_start == 0 else (profit / market_start * 100)
+            profit_dict[ticker] = profit
+            change_dict[ticker] = profit_pct
+        else:
+            profit_dict[ticker] = ''
+            change_dict[ticker] = ''
+
+    # --- Add profit/loss columns (only for tickers, not Others/PBT) ---
+    profit_col = "Profit/Loss (since ticker's latest quarter)"
+    pct_col = "% Profit/Loss (since ticker's latest quarter)"
+    qtr_col = "Quarter Used for P/L"
+    pivot_table[profit_col] = pivot_table.index.map(lambda t: profit_dict.get(t, ''))
+    pivot_table[pct_col] = pivot_table.index.map(lambda t: change_dict.get(t, ''))
+    pivot_table[qtr_col] = pivot_table.index.map(lambda t: quarter_used.get(t, ''))
+    
     # --- Sort 'Others' to the last row, then 'PBT' ---
     rows = pivot_table.index.tolist()
     others_row = pivot_table.loc[['Others']] if 'Others' in rows else None
