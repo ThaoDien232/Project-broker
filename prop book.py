@@ -169,8 +169,8 @@ def formatted_table(df, latest_quarter, selected_quarters=None):
     total_row = {}
     # Sum all visible quarter columns
     for q in pivot_table.columns:
-        if isinstance(q, str) and (q.endswith('_Profit_Loss') or q.endswith('_Profit_Loss_Pct')):
-            total_row[q] = pivot_table[q].sum() if 'Pct' not in q else ''
+        if isinstance(q, str) and (q.startswith('Profit/Loss') or q.startswith('% Profit/Loss')):
+            total_row[q] = pivot_table[q].sum() if '%' not in q else ''
         else:
             total_row[q] = pivot_table[q].sum() if q in all_quarters else ''
     total_df = pd.DataFrame([total_row], index=["Total"])
