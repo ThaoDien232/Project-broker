@@ -154,13 +154,17 @@ def formatted_table(df, latest_quarter, selected_quarters=None):
         # Map results into pivot_table
         profit_dict = results.set_index('Ticker')['Profit_Loss'].to_dict()
         change_dict = results.set_index('Ticker')['Profit_Loss_Pct'].to_dict()
-        pivot_table[f"{latest_quarter}_Profit_Loss"] = pivot_table.index.map(profit_dict)
-        pivot_table[f"{latest_quarter}_Profit_Loss_Pct"] = pivot_table.index.map(change_dict)
+        pivot_table[f"Profit/Loss since {latest_quarter}"] = pivot_table.index.map(profit_dict)
+        pivot_table[f"% Profit/Loss since {latest_quarter}"] = pivot_table.index.map(change_dict)
     # --- Sort 'Others' to the last row ---
     if 'Others' in pivot_table.index:
         others_row = pivot_table.loc[['Others']]
         other_rows = pivot_table.drop('Others')
         pivot_table = pd.concat([other_rows, others_row])
+    if 'PBT' in pivot_table.index:
+        pbt_row = pivot_table.loc[['PBT']]
+        other_rows = pivot_table.drop('PBT')
+        pivot_table = pd.concat([other_rows, pbt_row])
     # --- Add Total row at the end ---
     total_row = {}
     # Sum all visible quarter columns
