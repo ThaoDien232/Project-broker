@@ -214,14 +214,13 @@ def display_prop_book_table():
     )
     
     filtered_df = df_book.copy()
-    
+    # Always include PBT in the filtered DataFrame
     if selected_brokers and 'Broker' in df_book.columns:
-        filtered_df = filtered_df[filtered_df['Broker'] == (selected_brokers)]
-        
+        filtered_df = filtered_df[(filtered_df['Broker'] == selected_brokers) | (filtered_df['Ticker'] == 'PBT')]
     if selected_quarters and 'Quarter' in df_book.columns:
         filtered_df = filtered_df[filtered_df['Quarter'].isin(selected_quarters)]
 
-    # Get the latest quarter chronologically with data for the selected broker ---
+    # Get the latest quarter chronologically with data for the selected broker or PBT ---
     available_quarters = sort_quarters_by_date(filtered_df['Quarter'].unique())
     latest_quarter = available_quarters[-1] if available_quarters else None
     
@@ -229,7 +228,8 @@ def display_prop_book_table():
     st.subheader(f"{selected_brokers} Prop Book")
     
     with st.spinner("Loading data and calculating price changes..."):
-        formatted_df = formatted_table(filtered_df, latest_quarter, selected_quarters)
+        # Use available_quarters for both display and calculation
+        formatted_df = formatted_table(filtered_df, latest_quarter, available_quarters)
         st.dataframe(formatted_df, use_container_width=True)
 
 # Main application
