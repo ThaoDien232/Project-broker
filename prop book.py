@@ -122,7 +122,7 @@ def calculate_profit_loss(df, quarter_prices, current_prices, quarter):
         0 if row['Quarter_End_Market_Value'] == 0 else (row['Profit_Loss'] / row['Quarter_End_Market_Value'] * 100), axis=1).round(1)
     return df_calc
     
-def formatted_table(df, latest_quarter, selected_quarters=None):
+def formatted_table(df, selected_quarters=None):
     if df.empty:
         return pd.DataFrame()
     # Get numeric columns (excluding Ticker, Broker, Quarter)
@@ -248,6 +248,8 @@ def display_prop_book_table():
         filtered_df = filtered_df[(filtered_df['Broker'] == selected_brokers) | (filtered_df['Ticker'] == 'PBT')]
     if selected_quarters and 'Quarter' in df_book.columns:
         filtered_df = filtered_df[filtered_df['Quarter'].isin(selected_quarters)]
+    st.write("Filtered tickers:", filtered_df['Ticker'].unique())
+
 
     # Get the latest quarter chronologically with data for the selected broker or PBT ---
     available_quarters = sort_quarters_by_date(filtered_df['Quarter'].unique())
@@ -258,7 +260,7 @@ def display_prop_book_table():
     
     with st.spinner("Loading data and calculating price changes..."):
         # Use available_quarters for both display and calculation
-        formatted_df = formatted_table(filtered_df, latest_quarter, available_quarters)
+        formatted_df = formatted_table(filtered_df, available_quarters)
         st.dataframe(formatted_df, use_container_width=True)
 
 # Main application
