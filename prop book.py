@@ -156,23 +156,26 @@ def formatted_table(df, latest_quarter, selected_quarters=None):
         change_dict = results.set_index('Ticker')['Profit_Loss_Pct'].to_dict()
         pivot_table[f"Profit/Loss since {latest_quarter}"] = pivot_table.index.map(profit_dict)
         pivot_table[f"% Profit/Loss since {latest_quarter}"] = pivot_table.index.map(change_dict)
-    # --- Sort 'Others' to the last row ---
-    if 'Others' in pivot_table.index:
-        others_row = pivot_table.loc[['Others']]
-        other_rows = pivot_table.drop('Others')
-        pivot_table = pd.concat([other_rows, others_row])
-    if 'PBT' in pivot_table.index:
-        pbt_row = pivot_table.loc[['PBT']]
-        other_rows = pivot_table.drop('PBT')
-        pivot_table = pd.concat([other_rows, pbt_row])
-    # --- Add Total row at the end ---
+    # --- Sort 'Others' to the last row, then 'PBT' ---
+    rows = pivot_table.index.tolist()
+    others_row = pivot_table.loc[['Others']] if 'Others' in rows else None
+    pbt_row = pivot_table.loc[['PBT']] if 'PBT' in rows else None
+    main_rows = pivot_table.drop([r for r in ['Others', 'PBT'] if r in rows])
+    concat_list = [main_rows]
+    if others_row is not None:
+        concat_list.append(others_row)
+    if pbt_row is not None:
+        concat_list.append(pbt_row)
+    pivot_table = pd.concat(concat_list)
+    # --- Add Total row at the end, excluding 'PBT' from the sum ---
     total_row = {}
-    # Sum all visible quarter columns
+    # Exclude 'PBT' from total calculation
+    rows_for_total = [idx for idx in pivot_table.index if idx != 'PBT' and idx != 'Total']
     for q in pivot_table.columns:
         if isinstance(q, str) and (q.startswith('Profit/Loss') or q.startswith('% Profit/Loss')):
-            total_row[q] = pivot_table[q].sum() if '%' not in q else ''
+            total_row[q] = pivot_table.loc[rows_for_total, q].sum() if '%' not in q else ''
         else:
-            total_row[q] = pivot_table[q].sum() if q in all_quarters else ''
+            total_row[q] = pivot_table.loc[rows_for_total, q].sum() if q in all_quarters else ''
     total_df = pd.DataFrame([total_row], index=["Total"])
     pivot_table = pd.concat([pivot_table, total_df])
     # --- Format numbers and percentages ---
@@ -218,9 +221,9 @@ def display_prop_book_table():
     if selected_quarters and 'Quarter' in df_book.columns:
         filtered_df = filtered_df[filtered_df['Quarter'].isin(selected_quarters)]
 
-    # Get the latest quarter chronologically from the selected quarters ---
-    selected_quarters_sorted = sort_quarters_by_date(selected_quarters)
-    latest_quarter = selected_quarters_sorted[-1] if selected_quarters_sorted else None
+    # Get the latest quarter chronologically with data for the selected broker ---
+    available_quarters = sort_quarters_by_date(filtered_df['Quarter'].unique())
+    latest_quarter = available_quarters[-1] if available_quarters else None
     
     # Display the prop book table with additional columns
     st.subheader(f"{selected_brokers} Prop Book")
