@@ -131,14 +131,25 @@ def formatted_table(df, selected_quarters=None):
         all_quarters = sort_quarters_by_date(df['Quarter'].unique())
     else:
         all_quarters = sort_quarters_by_date(selected_quarters)
-    pivot_table = df.pivot_table(
+    # Build pivot table for all tickers except PBT, no aggregation
+    df_no_pbt = df[df['Ticker'] != 'PBT']
+    pivot_table = df_no_pbt.pivot(
         index='Ticker',
         columns='Quarter',
-        values=value_col,
-        aggfunc='sum',
-        fill_value=0
-    )
+        values=value_col
+    ).fillna(0)
     pivot_table = pivot_table.reindex(columns=all_quarters, fill_value=0)
+    # Prepare PBT row(s) as-is from filtered DataFrame
+    pbt_rows = df[df['Ticker'] == 'PBT']
+    if not pbt_rows.empty:
+        pbt_pivot = pbt_rows.pivot_table(
+            index='Ticker',
+            columns='Quarter',
+            values=value_col,
+            aggfunc='first',  # Take the value as-is, no sum
+            fill_value=0
+        )
+        pbt_pivot = pbt_pivot.reindex(columns=all_quarters, fill_value=0)
     tickers = [t for t in pivot_table.index if t.upper() not in ['OTHERS', 'PBT']]
     # --- Calculate P/L for each ticker's latest quarter (exclude PBT)
     profit_dict, pct_dict = {}, {}
@@ -186,9 +197,8 @@ def formatted_table(df, selected_quarters=None):
     total_df = pd.DataFrame([total_row], index=["Total"])
     pivot_table_final = pd.concat([pivot_table_no_pbt, total_df])
     # --- Append PBT row at the very bottom, formatted the same as others ---
-    if 'PBT' in rows:
-        pbt_row = pivot_table.loc[['PBT']]
-        pivot_table_final = pd.concat([pivot_table_final, pbt_row])
+    if not pbt_rows.empty:
+        pivot_table_final = pd.concat([pivot_table_final, pbt_pivot])
     # --- Formatting: format all rows, including PBT ---
     formatted_table = pivot_table_final.copy()
     import numpy as np
