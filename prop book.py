@@ -169,40 +169,45 @@ def formatted_table(df, selected_quarters=None):
     pct_col = "% Profit/Loss"
     pivot_table[profit_col] = pivot_table.index.map(lambda t: profit_dict.get(t, ''))
     pivot_table[pct_col] = pivot_table.index.map(lambda t: pct_dict.get(t, ''))
-    # --- Compose table: main, others, pbt
+    # --- Compose table: main, others ---
     rows = pivot_table.index.tolist()
     main_rows = pivot_table.drop([r for r in ['Others', 'PBT'] if r in rows])
     concat_list = [main_rows]
     if 'Others' in rows:
         concat_list.append(pivot_table.loc[['Others']])
-    if 'PBT' in rows:
-        concat_list.append(pivot_table.loc[['PBT']])
-    pivot_table = pd.concat(concat_list)
+    pivot_table_no_pbt = pd.concat(concat_list)
     # --- Total row, excluding PBT/Total
-    rows_for_total = [idx for idx in pivot_table.index if idx not in ['PBT', 'Total']]
+    rows_for_total = [idx for idx in pivot_table_no_pbt.index if idx not in ['Total']]
     total_row = {}
-    for col in pivot_table.columns:
+    for col in pivot_table_no_pbt.columns:
         if col == profit_col:
-            # Convert to numeric, ignore errors, sum only numbers
-            total_row[col] = pd.to_numeric(pivot_table.loc[rows_for_total, col], errors='coerce').sum()
+            total_row[col] = pd.to_numeric(pivot_table_no_pbt.loc[rows_for_total, col], errors='coerce').sum()
         else:
-            total_row[col] = pd.to_numeric(pivot_table.loc[rows_for_total, col], errors='coerce').sum()
+            total_row[col] = pd.to_numeric(pivot_table_no_pbt.loc[rows_for_total, col], errors='coerce').sum()
     total_df = pd.DataFrame([total_row], index=["Total"])
-    pivot_table = pd.concat([pivot_table, total_df])
-    # --- Formatting
-    formatted_table = pivot_table.copy()
+    pivot_table_final = pd.concat([pivot_table_no_pbt, total_df])
+    # --- Append PBT row at the very bottom, unformatted ---
+    if 'PBT' in rows:
+        pbt_row = pivot_table.loc[['PBT']]
+        pivot_table_final = pd.concat([pivot_table_final, pbt_row])
+    # --- Formatting: do NOT format PBT row, just display as is ---
+    formatted_table = pivot_table_final.copy()
     import numpy as np
     for col in formatted_table.columns:
+        if 'PBT' in formatted_table.index:
+            mask = formatted_table.index != 'PBT'
+        else:
+            mask = slice(None)
         if "%" in str(col):
-            formatted_table[col] = formatted_table[col].apply(
+            formatted_table.loc[mask, col] = formatted_table.loc[mask, col].apply(
                 lambda x: f"{x:,.1f}%" if isinstance(x, (int, float, np.integer, np.floating)) and pd.notnull(x) else ""
             )
         elif "Profit/Loss" in str(col):
-            formatted_table[col] = formatted_table[col].apply(
+            formatted_table.loc[mask, col] = formatted_table.loc[mask, col].apply(
                 lambda x: f"{x:,.1f}" if isinstance(x, (int, float, np.integer, np.floating)) and pd.notnull(x) else ""
             )
         else:
-            formatted_table[col] = formatted_table[col].apply(
+            formatted_table.loc[mask, col] = formatted_table.loc[mask, col].apply(
                 lambda x: f"{x:,.1f}" if isinstance(x, (int, float, np.integer, np.floating)) and pd.notnull(x) else ""
             )
     return formatted_table
