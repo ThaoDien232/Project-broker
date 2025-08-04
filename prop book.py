@@ -204,6 +204,7 @@ def formatted_table(df, selected_quarters=None):
     return formatted_table
 
 
+
 st.title("Prop Book Dashboard")
 
 # Add refresh button
