@@ -245,9 +245,9 @@ def display_prop_book_table():
     )
     
     filtered_df = df_book.copy()
-    # Always include PBT in the filtered DataFrame
+    # Only include PBT rows for the selected broker and selected quarters
     if selected_brokers and 'Broker' in df_book.columns:
-        filtered_df = filtered_df[(filtered_df['Broker'] == selected_brokers) | (filtered_df['Ticker'] == 'PBT')]
+        filtered_df = filtered_df[(filtered_df['Broker'] == selected_brokers) | ((filtered_df['Ticker'] == 'PBT') & (filtered_df['Broker'] == selected_brokers))]
     if selected_quarters and 'Quarter' in df_book.columns:
         filtered_df = filtered_df[filtered_df['Quarter'].isin(selected_quarters)]
 
