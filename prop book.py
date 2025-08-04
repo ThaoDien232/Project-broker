@@ -140,17 +140,15 @@ def formatted_table(df, selected_quarters=None):
     )
     pivot_table = pivot_table.reindex(columns=all_quarters, fill_value=0)
     tickers = [t for t in pivot_table.index if t.upper() not in ['OTHERS', 'PBT']]
-    # --- Calculate P/L for each ticker's latest quarter
-    profit_dict, pct_dict, quarter_dict = {}, {}, {}
+    # --- Calculate P/L for each ticker's latest quarter (exclude PBT)
+    profit_dict, pct_dict = {}, {}
     for t in tickers:
         q_list = [q for q in all_quarters if pivot_table.at[t, q] != 0]
         if not q_list:
             profit_dict[t] = ''
             pct_dict[t] = ''
-            quarter_dict[t] = ''
             continue
         q = q_list[-1]
-        quarter_dict[t] = q
         q_price = get_quarter_end_prices([t], q)[t]
         c_price = get_current_prices([t])[t]
         val = pivot_table.at[t, q]
@@ -167,8 +165,9 @@ def formatted_table(df, selected_quarters=None):
             pct_dict[t] = ''
     profit_col = "Profit/Loss"
     pct_col = "% Profit/Loss"
-    pivot_table[profit_col] = pivot_table.index.map(lambda t: profit_dict.get(t, ''))
-    pivot_table[pct_col] = pivot_table.index.map(lambda t: pct_dict.get(t, ''))
+    # Set profit/loss columns for tickers, empty for PBT
+    pivot_table[profit_col] = pivot_table.index.map(lambda t: profit_dict.get(t, '') if t not in ['PBT'] else '')
+    pivot_table[pct_col] = pivot_table.index.map(lambda t: pct_dict.get(t, '') if t not in ['PBT'] else '')
     # --- Compose table: main, others ---
     rows = pivot_table.index.tolist()
     main_rows = pivot_table.drop([r for r in ['Others', 'PBT'] if r in rows])
@@ -186,28 +185,24 @@ def formatted_table(df, selected_quarters=None):
             total_row[col] = pd.to_numeric(pivot_table_no_pbt.loc[rows_for_total, col], errors='coerce').sum()
     total_df = pd.DataFrame([total_row], index=["Total"])
     pivot_table_final = pd.concat([pivot_table_no_pbt, total_df])
-    # --- Append PBT row at the very bottom, unformatted ---
+    # --- Append PBT row at the very bottom, formatted the same as others ---
     if 'PBT' in rows:
         pbt_row = pivot_table.loc[['PBT']]
         pivot_table_final = pd.concat([pivot_table_final, pbt_row])
-    # --- Formatting: do NOT format PBT row, just display as is ---
+    # --- Formatting: format all rows, including PBT ---
     formatted_table = pivot_table_final.copy()
     import numpy as np
     for col in formatted_table.columns:
-        if 'PBT' in formatted_table.index:
-            mask = formatted_table.index != 'PBT'
-        else:
-            mask = slice(None)
         if "%" in str(col):
-            formatted_table.loc[mask, col] = formatted_table.loc[mask, col].apply(
+            formatted_table[col] = formatted_table[col].apply(
                 lambda x: f"{x:,.1f}%" if isinstance(x, (int, float, np.integer, np.floating)) and pd.notnull(x) else ""
             )
         elif "Profit/Loss" in str(col):
-            formatted_table.loc[mask, col] = formatted_table.loc[mask, col].apply(
+            formatted_table[col] = formatted_table[col].apply(
                 lambda x: f"{x:,.1f}" if isinstance(x, (int, float, np.integer, np.floating)) and pd.notnull(x) else ""
             )
         else:
-            formatted_table.loc[mask, col] = formatted_table.loc[mask, col].apply(
+            formatted_table[col] = formatted_table[col].apply(
                 lambda x: f"{x:,.1f}" if isinstance(x, (int, float, np.integer, np.floating)) and pd.notnull(x) else ""
             )
     return formatted_table
