@@ -202,7 +202,8 @@ def formatted_table(df, selected_quarters=None):
         else:
             formatted_table[col] = formatted_table[col].apply(lambda x: f"{x:,.1f}" if pd.notnull(x) and x != '' else "")
     return formatted_table
-st.write("Filtered tickers:", filtered_df['Ticker'].unique())
+
+st.title("Prop Book Dashboard")
 
 # Add refresh button
 col1, col2 = st.columns([3, 1])
