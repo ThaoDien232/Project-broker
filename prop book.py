@@ -140,8 +140,6 @@ def formatted_table(df, selected_quarters=None):
     )
     pivot_table = pivot_table.reindex(columns=all_quarters, fill_value=0)
     tickers = [t for t in pivot_table.index if t.upper() not in ['OTHERS', 'PBT']]
-    # --- PBT debug
-    st.write("Pivot table tickers (should include PBT):", list(pivot_table.index))
     # --- Calculate P/L for each ticker's latest quarter
     profit_dict, pct_dict, quarter_dict = {}, {}, {}
     for t in tickers:
@@ -186,10 +184,13 @@ def formatted_table(df, selected_quarters=None):
     rows_for_total = [idx for idx in pivot_table.index if idx not in ['PBT', 'Total']]
     total_row = {}
     for col in pivot_table.columns:
-        if col in [profit_col, pct_col, qtr_col]:
-            total_row[col] = pivot_table.loc[rows_for_total, col].sum() if col == profit_col else ''
+        if col == profit_col:
+            # Convert to numeric, ignore errors, sum only numbers
+            total_row[col] = pd.to_numeric(pivot_table.loc[rows_for_total, col], errors='coerce').sum()
+        elif col in [pct_col, qtr_col]:
+            total_row[col] = ''
         else:
-            total_row[col] = pivot_table.loc[rows_for_total, col].sum()
+            total_row[col] = pd.to_numeric(pivot_table.loc[rows_for_total, col], errors='coerce').sum()
     total_df = pd.DataFrame([total_row], index=["Total"])
     pivot_table = pd.concat([pivot_table, total_df])
     # --- Formatting
@@ -236,7 +237,6 @@ def display_prop_book_table():
         filtered_df = filtered_df[(filtered_df['Broker'] == selected_brokers) | (filtered_df['Ticker'] == 'PBT')]
     if selected_quarters and 'Quarter' in df_book.columns:
         filtered_df = filtered_df[filtered_df['Quarter'].isin(selected_quarters)]
-    st.write("Filtered tickers:", filtered_df['Ticker'].unique())
 
 
     # Get the latest quarter chronologically with data for the selected broker or PBT ---
