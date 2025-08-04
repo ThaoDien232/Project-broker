@@ -195,13 +195,20 @@ def formatted_table(df, selected_quarters=None):
     pivot_table = pd.concat([pivot_table, total_df])
     # --- Formatting
     formatted_table = pivot_table.copy()
+    import numpy as np
     for col in formatted_table.columns:
         if "%" in str(col):
-            formatted_table[col] = formatted_table[col].apply(lambda x: f"{x:,.1f}%" if pd.notnull(x) and x != '' else "")
+            formatted_table[col] = formatted_table[col].apply(
+                lambda x: f"{x:,.1f}%" if isinstance(x, (int, float, np.integer, np.floating)) and pd.notnull(x) else ""
+            )
         elif "Profit/Loss" in str(col):
-            formatted_table[col] = formatted_table[col].apply(lambda x: f"{x:,.1f}" if pd.notnull(x) and x != '' else "")
+            formatted_table[col] = formatted_table[col].apply(
+                lambda x: f"{x:,.1f}" if isinstance(x, (int, float, np.integer, np.floating)) and pd.notnull(x) else ""
+            )
         else:
-            formatted_table[col] = formatted_table[col].apply(lambda x: f"{x:,.1f}" if pd.notnull(x) and x != '' else "")
+            formatted_table[col] = formatted_table[col].apply(
+                lambda x: f"{x:,.1f}" if isinstance(x, (int, float, np.integer, np.floating)) and pd.notnull(x) else ""
+            )
     return formatted_table
 
 
