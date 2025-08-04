@@ -165,12 +165,10 @@ def formatted_table(df, selected_quarters=None):
         else:
             profit_dict[t] = ''
             pct_dict[t] = ''
-    profit_col = "Profit/Loss (since latest q)"
-    pct_col = "% Profit/Loss (since latest q)"
-    qtr_col = "Quarter Used for P/L"
+    profit_col = "Profit/Loss"
+    pct_col = "% Profit/Loss"
     pivot_table[profit_col] = pivot_table.index.map(lambda t: profit_dict.get(t, ''))
     pivot_table[pct_col] = pivot_table.index.map(lambda t: pct_dict.get(t, ''))
-    pivot_table[qtr_col] = pivot_table.index.map(lambda t: quarter_dict.get(t, ''))
     # --- Compose table: main, others, pbt
     rows = pivot_table.index.tolist()
     main_rows = pivot_table.drop([r for r in ['Others', 'PBT'] if r in rows])
@@ -187,8 +185,6 @@ def formatted_table(df, selected_quarters=None):
         if col == profit_col:
             # Convert to numeric, ignore errors, sum only numbers
             total_row[col] = pd.to_numeric(pivot_table.loc[rows_for_total, col], errors='coerce').sum()
-        elif col in [pct_col, qtr_col]:
-            total_row[col] = ''
         else:
             total_row[col] = pd.to_numeric(pivot_table.loc[rows_for_total, col], errors='coerce').sum()
     total_df = pd.DataFrame([total_row], index=["Total"])
