@@ -231,13 +231,15 @@ def display_prop_book_table():
         default=quarters
     )
     
-    filtered_df = df_book.copy()
-    # Always include PBT in the filtered DataFrame
-    if selected_brokers and 'Broker' in df_book.columns:
-        filtered_df = filtered_df[(filtered_df['Broker'] == selected_brokers) | (filtered_df['Ticker'] == 'PBT')]
+    # Filter by broker
+    filtered_df = df_book[df_book['Broker'] == selected_brokers]
+    # Pull all PBT rows, regardless of quarter
+    pbt_rows = df_book[df_book['Ticker'] == 'PBT']
+    # Combine broker data with all PBT rows
+    filtered_df = pd.concat([filtered_df, pbt_rows])
+    # Now filter by selected quarters
     if selected_quarters and 'Quarter' in df_book.columns:
         filtered_df = filtered_df[filtered_df['Quarter'].isin(selected_quarters)]
-    st.write("Filtered tickers:", filtered_df['Ticker'].unique())
 
 
     # Get the latest quarter chronologically with data for the selected broker or PBT ---
