@@ -190,7 +190,10 @@ def formatted_table(df, selected_quarters=None):
     rows_for_total = [idx for idx in pivot_table_no_pbt.index if idx not in ['Total']]
     total_row = {}
     for col in pivot_table_no_pbt.columns:
-        if col == profit_col:
+        if "%" in str(col):
+            # Skip % Profit/Loss from total calculation
+            total_row[col] = ""
+        elif col == profit_col:
             total_row[col] = pd.to_numeric(pivot_table_no_pbt.loc[rows_for_total, col], errors='coerce').sum()
         else:
             total_row[col] = pd.to_numeric(pivot_table_no_pbt.loc[rows_for_total, col], errors='coerce').sum()
