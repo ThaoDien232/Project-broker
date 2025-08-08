@@ -3,6 +3,8 @@ import pandas as pd
 import requests
 from datetime import datetime
 
+st.set_page_config(layout="wide")
+
 # Load the prop book data with error handling
 @st.cache_data
 def load_data():
