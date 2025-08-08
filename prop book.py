@@ -236,11 +236,21 @@ def display_prop_book_table():
     brokers = sorted(df_book['Broker'].unique())
     quarters = sort_quarters_by_date(df_book['Quarter'].unique())
 
+    # --- Disclaimers dictionary ---
+    disclaimers = {
+        "VIX": "Calculated profit/loss may not be correct from lack of latest holding",
+        "VCI": "Prop trade is held in AFS, not marked-to-market",
+        "HCM": "This is not HCM's prop book, not disclosed"
+    }
+
     selected_brokers = st.selectbox(
         "Select Brokers:",
         options=brokers,
         index=0
     )
+
+    if selected_brokers in disclaimers:
+        st.warning(disclaimers[selected_brokers])
     selected_quarters = st.multiselect(
         "Select Quarters:",
         options=quarters,
