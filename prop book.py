@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import requests
 from datetime import datetime
-
 st.set_page_config(layout="wide")
 
 # Load the prop book data with error handling
@@ -176,7 +175,7 @@ def formatted_table(df, selected_quarters=None):
         else:
             profit_dict[t] = ''
             pct_dict[t] = ''
-    profit_col = "Profit/Loss"
+    profit_col = "Profit/Loss since latest quarter"
     pct_col = "% Profit/Loss"
     # Set profit/loss columns for tickers, empty for PBT
     pivot_table[profit_col] = pivot_table.index.map(lambda t: profit_dict.get(t, '') if t not in ['PBT'] else '')
