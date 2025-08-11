@@ -175,30 +175,45 @@ def formatted_table(df, selected_quarters=None):
             profit_dict[t] = ''
             pct_dict[t] = ''
             continue
-        # If all tickers have zero for the latest quarter, revert to previous quarter
+        # If all tickers have zero for the latest quarter, revert to previous quarter for all
         if all_latest_zero:
             q = nonzero_quarters[-1]
+            q_price = get_quarter_end_prices([t], q)[t]
+            c_price = get_current_prices([t])[t]
+            val = pivot_table.at[t, q]
+            if q_price and c_price and q_price != 0 and val != 0:
+                vol = val / q_price
+                p_start = vol * q_price
+                p_now = vol * c_price
+                profit = p_now - p_start
+                pct = 0 if p_start == 0 else (profit / p_start * 100)
+                profit_dict[t] = profit
+                pct_dict[t] = pct
+            else:
+                profit_dict[t] = ''
+                pct_dict[t] = ''
         else:
-            # If this ticker has a nonzero value in the latest quarter, use it
+            # Only calculate for tickers with nonzero value in the latest quarter
             if pivot_table.at[t, latest_quarter] != 0:
                 q = latest_quarter
+                q_price = get_quarter_end_prices([t], q)[t]
+                c_price = get_current_prices([t])[t]
+                val = pivot_table.at[t, q]
+                if q_price and c_price and q_price != 0 and val != 0:
+                    vol = val / q_price
+                    p_start = vol * q_price
+                    p_now = vol * c_price
+                    profit = p_now - p_start
+                    pct = 0 if p_start == 0 else (profit / p_start * 100)
+                    profit_dict[t] = profit
+                    pct_dict[t] = pct
+                else:
+                    profit_dict[t] = ''
+                    pct_dict[t] = ''
             else:
-                # Otherwise, use the latest nonzero quarter for this ticker
-                q = nonzero_quarters[-1]
-        q_price = get_quarter_end_prices([t], q)[t]
-        c_price = get_current_prices([t])[t]
-        val = pivot_table.at[t, q]
-        if q_price and c_price and q_price != 0 and val != 0:
-            vol = val / q_price
-            p_start = vol * q_price
-            p_now = vol * c_price
-            profit = p_now - p_start
-            pct = 0 if p_start == 0 else (profit / p_start * 100)
-            profit_dict[t] = profit
-            pct_dict[t] = pct
-        else:
-            profit_dict[t] = ''
-            pct_dict[t] = ''
+                # Do not calculate profit/loss for tickers with zero in the latest quarter
+                profit_dict[t] = ''
+                pct_dict[t] = ''
     
     # Add Profit/Loss and % Profit/Loss columns
     profit_col = "Profit/Loss since latest quarter"
