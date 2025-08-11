@@ -131,9 +131,14 @@ def formatted_table(df, selected_quarters=None):
     numeric_cols = df.select_dtypes(include=['number']).columns.tolist()
     value_col = numeric_cols[0] if len(numeric_cols) == 1 else st.selectbox("Select value column:", numeric_cols)
 
-    # Only keep the selected value column and drop the other if present
-    other_cols = [col for col in ['FVTPL value', 'AFS value'] if col in df.columns and col != value_col]
-    df = df.drop(columns=other_cols)
+    # Only show rows where the selected value column is present and the other is not
+    other_col = None
+    if value_col == 'FVTPL value' and 'AFS value' in df.columns:
+        other_col = 'AFS value'
+    elif value_col == 'AFS value' and 'FVTPL value' in df.columns:
+        other_col = 'FVTPL value'
+    if other_col:
+        df = df[(df[other_col].isnull() | (df[other_col] == 0))]
     
     if selected_quarters is None:
         all_quarters = sort_quarters_by_date(df['Quarter'].unique())
