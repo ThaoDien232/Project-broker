@@ -134,6 +134,13 @@ def formatted_table(df, selected_quarters=None):
         all_quarters = sort_quarters_by_date(selected_quarters)
     # Build pivot table for all tickers except PBT, no aggregation
     df_no_pbt = df[df['Ticker'] != 'PBT']
+    # Group by Ticker, Quarter, FVTPL value, and AFS value if present
+    group_cols = ['Ticker', 'Quarter']
+    if 'FVTPL value' in df_no_pbt.columns:
+        group_cols.append('FVTPL value')
+    if 'AFS value' in df_no_pbt.columns:
+        group_cols.append('AFS value')
+    df_no_pbt = df_no_pbt.groupby(group_cols, as_index=False).sum()
     pivot_table = df_no_pbt.pivot(
         index='Ticker',
         columns='Quarter',
