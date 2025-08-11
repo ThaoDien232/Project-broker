@@ -130,6 +130,10 @@ def formatted_table(df, selected_quarters=None):
     # Numeric columns selection
     numeric_cols = df.select_dtypes(include=['number']).columns.tolist()
     value_col = numeric_cols[0] if len(numeric_cols) == 1 else st.selectbox("Select value column:", numeric_cols)
+
+    # Only keep the selected value column and drop the other if present
+    other_cols = [col for col in ['FVTPL value', 'AFS value'] if col in df.columns and col != value_col]
+    df = df.drop(columns=other_cols)
     
     if selected_quarters is None:
         all_quarters = sort_quarters_by_date(df['Quarter'].unique())
