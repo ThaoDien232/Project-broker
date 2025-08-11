@@ -165,17 +165,29 @@ def formatted_table(df, selected_quarters=None):
     tickers = [t for t in pivot_table.index if t.upper() not in ['OTHERS', 'PBT']]
     profit_dict, pct_dict = {}, {}
     
+    # Determine if all tickers have zero for the latest quarter
+    latest_quarter = all_quarters[-1]
+    all_latest_zero = all(pivot_table.at[t, latest_quarter] == 0 for t in tickers)
     for t in tickers:
-        q_list = [q for q in all_quarters if pivot_table.at[t, q] != 0]
-        if not q_list:
+        # Find the latest quarter with a nonzero value for this ticker
+        nonzero_quarters = [q for q in all_quarters if pivot_table.at[t, q] != 0]
+        if not nonzero_quarters:
             profit_dict[t] = ''
             pct_dict[t] = ''
             continue
-        q = q_list[-1]
+        # If all tickers have zero for the latest quarter, revert to previous quarter
+        if all_latest_zero:
+            q = nonzero_quarters[-1]
+        else:
+            # If this ticker has a nonzero value in the latest quarter, use it
+            if pivot_table.at[t, latest_quarter] != 0:
+                q = latest_quarter
+            else:
+                # Otherwise, use the latest nonzero quarter for this ticker
+                q = nonzero_quarters[-1]
         q_price = get_quarter_end_prices([t], q)[t]
         c_price = get_current_prices([t])[t]
         val = pivot_table.at[t, q]
-        
         if q_price and c_price and q_price != 0 and val != 0:
             vol = val / q_price
             p_start = vol * q_price
