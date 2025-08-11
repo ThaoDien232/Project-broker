@@ -1,0 +1,6 @@
+[theme]
+primaryColor = "#013b14ff"        # Buttons, sliders, active highlights
+backgroundColor = "#FFFFFF"     # Page background
+secondaryBackgroundColor = "#F0F2F6" # Sidebar & widget background
+textColor = "#000000"           # Text
+font = "sans serif"             # or "serif" / "monospace"
