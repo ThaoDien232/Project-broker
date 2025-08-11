@@ -126,41 +126,40 @@ def calculate_profit_loss(df, quarter_prices, current_prices, quarter):
 def formatted_table(df, selected_quarters=None):
     if df.empty:
         return pd.DataFrame()
+    
+    # Numeric columns selection
     numeric_cols = df.select_dtypes(include=['number']).columns.tolist()
     value_col = numeric_cols[0] if len(numeric_cols) == 1 else st.selectbox("Select value column:", numeric_cols)
+    
     if selected_quarters is None:
         all_quarters = sort_quarters_by_date(df['Quarter'].unique())
     else:
         all_quarters = sort_quarters_by_date(selected_quarters)
-    # Build pivot table for all tickers except PBT, no aggregation
+    
+    # Filter out 'PBT' for pivot table calculation
     df_no_pbt = df[df['Ticker'] != 'PBT']
-    # Group by Ticker, Quarter, FVTPL value, and AFS value if present
+    
+    # Group and aggregate the data
     group_cols = ['Ticker', 'Quarter']
     if 'FVTPL value' in df_no_pbt.columns:
         group_cols.append('FVTPL value')
     if 'AFS value' in df_no_pbt.columns:
         group_cols.append('AFS value')
     df_no_pbt = df_no_pbt.groupby(group_cols, as_index=False).sum()
+    
+    # Create pivot table
     pivot_table = df_no_pbt.pivot(
         index='Ticker',
         columns='Quarter',
         values=value_col
     ).fillna(0)
+    
     pivot_table = pivot_table.reindex(columns=all_quarters, fill_value=0)
-    # Prepare PBT row(s) as-is from filtered DataFrame
-    pbt_rows = df[df['Ticker'] == 'PBT']
-    if not pbt_rows.empty:
-        pbt_pivot = pbt_rows.pivot_table(
-            index='Ticker',
-            columns='Quarter',
-            values=value_col,
-            aggfunc='first',  # Take the value as-is, no sum
-            fill_value=0
-        )
-        pbt_pivot = pbt_pivot.reindex(columns=all_quarters, fill_value=0)
+
+    # Calculate Profit/Loss for each ticker
     tickers = [t for t in pivot_table.index if t.upper() not in ['OTHERS', 'PBT']]
-    # --- Calculate P/L for each ticker's latest quarter (exclude PBT)
     profit_dict, pct_dict = {}, {}
+    
     for t in tickers:
         q_list = [q for q in all_quarters if pivot_table.at[t, q] != 0]
         if not q_list:
@@ -171,6 +170,7 @@ def formatted_table(df, selected_quarters=None):
         q_price = get_quarter_end_prices([t], q)[t]
         c_price = get_current_prices([t])[t]
         val = pivot_table.at[t, q]
+        
         if q_price and c_price and q_price != 0 and val != 0:
             vol = val / q_price
             p_start = vol * q_price
@@ -182,34 +182,49 @@ def formatted_table(df, selected_quarters=None):
         else:
             profit_dict[t] = ''
             pct_dict[t] = ''
+    
+    # Add Profit/Loss and % Profit/Loss columns
     profit_col = "Profit/Loss since latest quarter"
     pct_col = "% Profit/Loss"
-    # Set profit/loss columns for tickers, empty for PBT
     pivot_table[profit_col] = pivot_table.index.map(lambda t: profit_dict.get(t, '') if t not in ['PBT'] else '')
     pivot_table[pct_col] = pivot_table.index.map(lambda t: pct_dict.get(t, '') if t not in ['PBT'] else '')
-    # --- Compose table: main, others, total, and PBT ---
+
+    # Add PBT and total rows separately
+    pbt_rows = df[df['Ticker'] == 'PBT']
+    if not pbt_rows.empty:
+        pbt_pivot = pbt_rows.pivot_table(
+            index='Ticker',
+            columns='Quarter',
+            values=value_col,
+            aggfunc='first',  # Take the value as-is, no sum
+            fill_value=0
+        )
+        pbt_pivot = pbt_pivot.reindex(columns=all_quarters, fill_value=0)
+    
     rows = pivot_table.index.tolist()
     main_rows = pivot_table.drop([r for r in ['Others', 'PBT'] if r in rows])
     others_rows = pivot_table.loc[['Others']] if 'Others' in rows else pd.DataFrame()
-    # Combine main tickers and Others (if present)
+    
     pivot_table_no_pbt = pd.concat([main_rows, others_rows]) if not others_rows.empty else main_rows
-    # --- Total row, excluding PBT/Total
+    
+    # Total row calculation
     rows_for_total = [idx for idx in pivot_table_no_pbt.index if idx not in ['Total']]
     total_row = {}
     for col in pivot_table_no_pbt.columns:
         if "%" in str(col):
-            # Skip % Profit/Loss from total calculation
             total_row[col] = ""
         elif col == profit_col:
             total_row[col] = pd.to_numeric(pivot_table_no_pbt.loc[rows_for_total, col], errors='coerce').sum()
         else:
             total_row[col] = pd.to_numeric(pivot_table_no_pbt.loc[rows_for_total, col], errors='coerce').sum()
+    
     total_df = pd.DataFrame([total_row], index=["Total"])
-    # Final table: all tickers, Others, Total, and PBT (if present)
     pivot_table_final = pd.concat([pivot_table_no_pbt, total_df])
+    
     if not pbt_rows.empty:
         pivot_table_final = pd.concat([pivot_table_final, pbt_pivot])
-    # --- Formatting: format all rows, including PBT ---
+    
+    # Formatting numbers
     formatted_table = pivot_table_final.copy()
     import numpy as np
     for col in formatted_table.columns:
@@ -225,8 +240,8 @@ def formatted_table(df, selected_quarters=None):
             formatted_table[col] = formatted_table[col].apply(
                 lambda x: f"{x:,.1f}" if isinstance(x, (int, float, np.integer, np.floating)) and pd.notnull(x) else ""
             )
-    return formatted_table
 
+    return formatted_table
 
 st.title("Prop Book Dashboard")
 
