@@ -141,10 +141,6 @@ def formatted_table(df, selected_quarters=None):
     
     # Group and aggregate the data
     group_cols = ['Ticker', 'Quarter']
-    if 'FVTPL value' in df_no_pbt.columns:
-        group_cols.append('FVTPL value')
-    if 'AFS value' in df_no_pbt.columns:
-        group_cols.append('AFS value')
     df_no_pbt = df_no_pbt.groupby(group_cols, as_index=False).sum()
     
     # Create pivot table
