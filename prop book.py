@@ -187,16 +187,12 @@ def formatted_table(df, selected_quarters=None):
     # Set profit/loss columns for tickers, empty for PBT
     pivot_table[profit_col] = pivot_table.index.map(lambda t: profit_dict.get(t, '') if t not in ['PBT'] else '')
     pivot_table[pct_col] = pivot_table.index.map(lambda t: pct_dict.get(t, '') if t not in ['PBT'] else '')
-    # --- Compose table: main, others ---
+    # --- Compose table: main, others, total, and PBT ---
     rows = pivot_table.index.tolist()
-    # Keep all tickers except PBT in main_rows
-    main_rows = pivot_table.drop([r for r in ['PBT'] if r in rows])
-    # If 'Others' exists, move it to the bottom
-    if 'Others' in main_rows.index:
-        others_row = main_rows.loc[['Others']]
-        main_rows = main_rows.drop('Others')
-        main_rows = pd.concat([main_rows, others_row])
-    pivot_table_no_pbt = main_rows
+    main_rows = pivot_table.drop([r for r in ['Others', 'PBT'] if r in rows])
+    others_rows = pivot_table.loc[['Others']] if 'Others' in rows else pd.DataFrame()
+    # Combine main tickers and Others (if present)
+    pivot_table_no_pbt = pd.concat([main_rows, others_rows]) if not others_rows.empty else main_rows
     # --- Total row, excluding PBT/Total
     rows_for_total = [idx for idx in pivot_table_no_pbt.index if idx not in ['Total']]
     total_row = {}
@@ -209,8 +205,8 @@ def formatted_table(df, selected_quarters=None):
         else:
             total_row[col] = pd.to_numeric(pivot_table_no_pbt.loc[rows_for_total, col], errors='coerce').sum()
     total_df = pd.DataFrame([total_row], index=["Total"])
+    # Final table: all tickers, Others, Total, and PBT (if present)
     pivot_table_final = pd.concat([pivot_table_no_pbt, total_df])
-    # --- Append PBT row at the very bottom, formatted the same as others ---
     if not pbt_rows.empty:
         pivot_table_final = pd.concat([pivot_table_final, pbt_pivot])
     # --- Formatting: format all rows, including PBT ---
