@@ -189,11 +189,14 @@ def formatted_table(df, selected_quarters=None):
     pivot_table[pct_col] = pivot_table.index.map(lambda t: pct_dict.get(t, '') if t not in ['PBT'] else '')
     # --- Compose table: main, others ---
     rows = pivot_table.index.tolist()
-    main_rows = pivot_table.drop([r for r in ['Others', 'PBT'] if r in rows])
-    concat_list = [main_rows]
-    if 'Others' in rows:
-        concat_list.append(pivot_table.loc[['Others']])
-    pivot_table_no_pbt = pd.concat(concat_list)
+    # Keep all tickers except PBT in main_rows
+    main_rows = pivot_table.drop([r for r in ['PBT'] if r in rows])
+    # If 'Others' exists, move it to the bottom
+    if 'Others' in main_rows.index:
+        others_row = main_rows.loc[['Others']]
+        main_rows = main_rows.drop('Others')
+        main_rows = pd.concat([main_rows, others_row])
+    pivot_table_no_pbt = main_rows
     # --- Total row, excluding PBT/Total
     rows_for_total = [idx for idx in pivot_table_no_pbt.index if idx not in ['Total']]
     total_row = {}
