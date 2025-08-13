@@ -292,7 +292,7 @@ def display_prop_book_table():
 
     # --- Disclaimers dictionary ---
     disclaimers = {
-        "VIX": "Calculated profit/loss may not be correct from lack of latest holding",
+        "VIX": "Calculated profit/loss may not be correct if latest holding is not available",
         "VCI": "Prop trade is held in AFS, not marked-to-market",
         "HCM": "This is not HCM's prop book, not disclosed"
     }
