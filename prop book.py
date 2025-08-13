@@ -116,8 +116,8 @@ def calculate_profit_loss(df, quarter_prices, current_prices, quarter):
     df_calc['Quarter_End_Market_Value'] = df_calc['Volume'] * df_calc['Quarter_End_Price'].fillna(0)
     # Calculate current market value using the same volume but current prices
     df_calc['Current_Market_Value'] = df_calc['Volume'] * df_calc['Current_Price'].fillna(0)
-    # Calculate profit/loss from quarter-end to current (not vs FVTPL value)
-    df_calc['Profit_Loss'] = df_calc['Current_Market_Value'] - df_calc['Quarter_End_Market_Value']
+    # Calculate profit/loss from current market value minus FVTPL value
+    df_calc['Profit_Loss'] = df_calc['Current_Market_Value'] - df_calc['FVTPL value']
     df_calc['Total_Profit_Loss'] = df_calc['Profit_Loss'].sum()
     df_calc['Profit_Loss_Pct'] = df_calc.apply(lambda row:
         0 if row['Quarter_End_Market_Value'] == 0 else (row['Profit_Loss'] / row['Quarter_End_Market_Value'] * 100), axis=1).round(1)
