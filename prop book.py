@@ -327,21 +327,35 @@ def display_prop_book_table():
     with col3:
         if selected_quarters:
             # Create data organized by broker for the selected quarters
-            all_brokers_data = {}
+            combined_csv = ""
             brokers_for_export = sorted(df_book['Broker'].unique())
             
             for broker in brokers_for_export:
                 broker_df = df_book[(df_book['Broker'] == broker) & (df_book['Quarter'].isin(selected_quarters))].copy()
                 if not broker_df.empty:
-                    formatted_broker_data = formatted_table(broker_df, selected_quarters, key_suffix=f"export_{broker}", show_selectbox=False)
-                    all_brokers_data[broker] = formatted_broker_data
-            
-            # Combine all broker data into a single CSV with broker sections
-            combined_csv = ""
-            for broker, data in all_brokers_data.items():
-                combined_csv += f"\n{broker} Prop Book\n"
-                combined_csv += data.to_csv(index=True)
-                combined_csv += "\n"
+                    combined_csv += f"\n{broker} Prop Book\n"
+                    
+                    # Get FVTPL data
+                    fvtpl_df = broker_df[(broker_df['FVTPL value'].notnull() & (broker_df['FVTPL value'] != 0))].copy()
+                    if not fvtpl_df.empty:
+                        fvtpl_data = formatted_table(fvtpl_df, selected_quarters, key_suffix=f"export_fvtpl_{broker}", show_selectbox=False)
+                        combined_csv += f"\nFVTPL Values:\n"
+                        combined_csv += fvtpl_data.to_csv(index=True)
+                        combined_csv += "\n"
+                    
+                    # Get AFS data if AFS column exists
+                    if 'AFS value' in broker_df.columns:
+                        afs_df = broker_df[(broker_df['AFS value'].notnull() & (broker_df['AFS value'] != 0))].copy()
+                        if not afs_df.empty:
+                            # Copy AFS to FVTPL column for processing since formatted_table expects FVTPL
+                            afs_df_modified = afs_df.copy()
+                            afs_df_modified['FVTPL value'] = afs_df_modified['AFS value']
+                            afs_data = formatted_table(afs_df_modified, selected_quarters, key_suffix=f"export_afs_{broker}", show_selectbox=False)
+                            combined_csv += f"AFS Values:\n"
+                            combined_csv += afs_data.to_csv(index=True)
+                            combined_csv += "\n"
+                    
+                    combined_csv += "\n"  # Extra spacing between brokers
             
             st.download_button(
                 label="Export Data",
