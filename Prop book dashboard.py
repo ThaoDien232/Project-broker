@@ -123,13 +123,24 @@ def calculate_profit_loss(df, quarter_prices, current_prices, quarter):
         0 if row['Quarter_End_Market_Value'] == 0 else (row['Profit_Loss'] / row['Quarter_End_Market_Value'] * 100), axis=1).round(1)
     return df_calc
     
-def formatted_table(df, selected_quarters=None):
+def formatted_table(df, selected_quarters=None, key_suffix="", show_selectbox=True):
     if df.empty:
         return pd.DataFrame()
     
     # Numeric columns selection
     numeric_cols = df.select_dtypes(include=['number']).columns.tolist()
-    value_col = numeric_cols[0] if len(numeric_cols) == 1 else st.selectbox("Select value column:", numeric_cols)
+    import hashlib, time
+    df_cols_str = ','.join(df.columns.astype(str))
+    quarters_str = ','.join(selected_quarters) if selected_quarters is not None else ''
+    broker_info = df['Broker'].iloc[0] if 'Broker' in df.columns and not df.empty else 'unknown'
+    unique_str = f"{df_cols_str}-{quarters_str}-{broker_info}-{key_suffix}-{time.time()}"
+    selectbox_key = f"value_col_{hashlib.md5(unique_str.encode()).hexdigest()}"
+    
+    # For download operations, skip the selectbox and use the first numeric column
+    if not show_selectbox:
+        value_col = numeric_cols[0] if numeric_cols else None
+    else:
+        value_col = numeric_cols[0] if len(numeric_cols) == 1 else st.selectbox("Select value column:", numeric_cols, key=selectbox_key)
 
     # Only show rows where the selected value column is present and the other is not
     other_col = None
@@ -277,8 +288,8 @@ def formatted_table(df, selected_quarters=None):
 
 st.title("Prop Book Dashboard")
 
-# Add refresh button
-col1, col2 = st.columns([3, 1])
+# Add refresh and export buttons
+col1, col2, col3 = st.columns([2, 1, 1])
 with col2:
     if st.button("🔄 Refresh Data"):
         st.cache_data.clear()
@@ -297,6 +308,7 @@ def display_prop_book_table():
         "HCM": "This is not HCM's prop book, not disclosed"
     }
 
+
     selected_brokers = st.selectbox(
         "Select Brokers:",
         options=brokers,
@@ -310,7 +322,48 @@ def display_prop_book_table():
         options=quarters,
         default=quarters
     )
-    
+
+    # Export button in top right - move this logic to col3
+    with col3:
+        if selected_quarters:
+            # Create data organized by broker for the selected quarters
+            combined_csv = ""
+            brokers_for_export = sorted(df_book['Broker'].unique())
+            
+            for broker in brokers_for_export:
+                broker_df = df_book[(df_book['Broker'] == broker) & (df_book['Quarter'].isin(selected_quarters))].copy()
+                if not broker_df.empty:
+                    combined_csv += f"\n{broker} Prop Book\n"
+                    
+                    # Get FVTPL data
+                    fvtpl_df = broker_df[(broker_df['FVTPL value'].notnull() & (broker_df['FVTPL value'] != 0))].copy()
+                    if not fvtpl_df.empty:
+                        fvtpl_data = formatted_table(fvtpl_df, selected_quarters, key_suffix=f"export_fvtpl_{broker}", show_selectbox=False)
+                        combined_csv += f"\nFVTPL Values:\n"
+                        combined_csv += fvtpl_data.to_csv(index=True)
+                        combined_csv += "\n"
+                    
+                    # Get AFS data if AFS column exists
+                    if 'AFS value' in broker_df.columns:
+                        afs_df = broker_df[(broker_df['AFS value'].notnull() & (broker_df['AFS value'] != 0))].copy()
+                        if not afs_df.empty:
+                            # Copy AFS to FVTPL column for processing since formatted_table expects FVTPL
+                            afs_df_modified = afs_df.copy()
+                            afs_df_modified['FVTPL value'] = afs_df_modified['AFS value']
+                            afs_data = formatted_table(afs_df_modified, selected_quarters, key_suffix=f"export_afs_{broker}", show_selectbox=False)
+                            combined_csv += f"AFS Values:\n"
+                            combined_csv += afs_data.to_csv(index=True)
+                            combined_csv += "\n"
+                    
+                    combined_csv += "\n"  # Extra spacing between brokers
+            
+            st.download_button(
+                label="Export Data",
+                data=combined_csv,
+                file_name=f"prop_book_all_brokers_{'_'.join(selected_quarters)}.csv",
+                mime="text/csv"
+            )
+
     filtered_df = df_book.copy()
     # Only include PBT rows for the selected broker and selected quarters
     if selected_brokers and 'Broker' in df_book.columns:
@@ -318,17 +371,16 @@ def display_prop_book_table():
     if selected_quarters and 'Quarter' in df_book.columns:
         filtered_df = filtered_df[filtered_df['Quarter'].isin(selected_quarters)]
 
-
     # Get the latest quarter chronologically with data for the selected broker or PBT ---
     available_quarters = sort_quarters_by_date(filtered_df['Quarter'].unique())
     latest_quarter = available_quarters[-1] if available_quarters else None
-    
+
     # Display the prop book table with additional columns
     st.subheader(f"{selected_brokers} Prop Book")
-    
+
     with st.spinner("Loading data and calculating price changes..."):
         # Use available_quarters for both display and calculation
-        formatted_df = formatted_table(filtered_df, available_quarters)
+        formatted_df = formatted_table(filtered_df, available_quarters, key_suffix=f"display_{selected_brokers}")
         st.dataframe(formatted_df, use_container_width=True)
 
 # Main application

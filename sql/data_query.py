@@ -1,5 +1,5 @@
 """
-Module for database queries and helper functions for bank project.
+Module for database queries and helper functions for security project.
 """
 import pyodbc
 import pandas as pd
@@ -15,11 +15,11 @@ def get_base_path():
 # Connection string
 DIAMOND_STR = 'DRIVER={ODBC Driver 17 for SQL Server};Server=dcdwh-prod.sql.azuresynapse.net;Database=dcdwhproddedicatedpool;UID=researchlogin;PWD=353fsf*($%#sfsfe;MultipleActiveResultSets=true;Command Timeout=300;'
 
-# File name mapping for bank queries to match existing files
-bank_FILE_MAPPING = {
-    'bank_BALANCESHEET': 'BS_bank',
-    'bank_INCOMESTATEMENT': 'IS_bank',
-    'bank_NOTE': 'Note_bank'
+# File name mapping for security queries to match existing files
+security_FILE_MAPPING = {
+    'security_BALANCESHEET': 'BS_security',
+    'security_INCOMESTATEMENT': 'IS_security',
+    'security_NOTE': 'Note_security'
 }
 
 # Query configurations
@@ -84,11 +84,11 @@ QUERY_CONFIG = {
     }
 }
 
-# bank queries (always full refresh)
-bank_QUERIES = {
-    'bank_BALANCESHEET': 'SELECT * FROM S_SPS_BALANCESHEET_bank',
-    'bank_INCOMESTATEMENT': 'SELECT * FROM S_SPS_INCOMESTATEMENT_bank',
-    'bank_NOTE': 'SELECT * FROM S_SPS_NOTE_bank'
+# security queries (always full refresh)
+security_QUERIES = {
+    'security_BALANCESHEET': 'SELECT * FROM S_SPS_BALANCESHEET_security',
+    'security_INCOMESTATEMENT': 'SELECT * FROM S_SPS_INCOMESTATEMENT_security',
+    'security_NOTE': 'SELECT * FROM S_SPS_NOTE_security'
 }
 
 # Date format requirements:
@@ -188,13 +188,13 @@ def full_refresh_all():
         print(f"Full refresh: {query_name}")
         full_refresh(query_name)
     
-    # Process bank queries (always full refresh)
+    # Process security queries (always full refresh)
     print(f"\n{'='*60}")
-    print("Processing bank Data")
-    for query_name, query in bank_QUERIES.items():
+    print("Processing security Data")
+    for query_name, query in security_QUERIES.items():
         df = load_data(query)
-        # Use mapped file name for bank data
-        file_name = bank_FILE_MAPPING.get(query_name, query_name)
+        # Use mapped file name for security data
+        file_name = security_FILE_MAPPING.get(query_name, query_name)
         to_csv(df, file_name)
 
 def incremental_update(query_name: str, date_filter: str):
@@ -220,17 +220,17 @@ def incremental_update(query_name: str, date_filter: str):
     if df is not None:
         merge_and_deduplicate(df, query_name, config['dedupe_columns'])
 
-def full_refresh_banks():
-    """Perform full refresh for bank data only."""
+def full_refresh_security():
+    """Perform full refresh for security data only."""
     print(f"\n{'='*60}")
-    print("Processing bank Data (Full Refresh)")
+    print("Processing security Data (Full Refresh)")
     print(f"{'='*60}")
 
-    for query_name, query in bank_QUERIES.items():
+    for query_name, query in security_QUERIES.items():
         print(f"\nProcessing: {query_name}")
         df = load_data(query)
-        # Use mapped file name for bank data
-        file_name = bank_FILE_MAPPING.get(query_name, query_name)
+        # Use mapped file name for security data
+        file_name = security_FILE_MAPPING.get(query_name, query_name)
         to_csv(df, file_name)
         
     print(f"\n{'='*60}")
@@ -241,14 +241,14 @@ if __name__ == "__main__":
     # Examples of different usage patterns:
     # NOTE: All files will be saved directly to the Data folder
     
-    # 1. Full refresh everything (includes all data + banks)
+    # 1. Full refresh everything (includes all data + security)
     # full_refresh_all()
 
-    # 2. Full refresh bank data only (saves as BS_bank.csv, IS_bank.csv, Note_bank.csv)
-    # full_refresh_banks()
+    # 2. Full refresh security data only (saves as BS_security.csv, IS_security.csv, Note_security.csv)
+    # full_refresh_security()
 
     # 3. Full refresh specific query
-    full_refresh('INDEX')
+    # full_refresh('FORECAST')
 
     # 4. Incremental update with date filter
     #incremental_update('INDEX', '2025-07-15')  # Daily data from this date

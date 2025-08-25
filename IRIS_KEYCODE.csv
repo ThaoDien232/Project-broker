@@ -1,0 +1,415 @@
+Id,ItemType,Category,ReportFormat,KeyCodeName,KeyCode,DWHCode,Formula,FormulaValid,FormulaError,DisplayOrder,DisplayUnit,DisplayFormat,UpdatedDate,UpdatedBy,ItemLevel,ValueType,IsPriceItem,IsTTMRatio,IsOverridable,IsShowReview,SectorFormula
+1338,Diamond,X-Factor,Security,1Y Growth Prospect,12m_growth_prospect,NULL,NULL,1,NULL,82,NULL,NULL,58:04.4,ducle@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2205,Diamond,Consensus,Security,ACBS,ACBS,NULL,NULL,1,NULL,0,NULL,NULL,59:52.7,chinhtruong@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2206,Diamond,Consensus,Security,ACBS.NPATMI,ACBS.NPATMI,NULL,NULL,1,NULL,0,Billion,NULL,59:52.7,chinhtruong@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2207,Diamond,Consensus,Security,ACBS.Target_Price,ACBS.Target_Price,NULL,NULL,1,NULL,0,NULL,NULL,59:52.8,chinhtruong@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1281,Diamond,Balance Sheet,Security,Account payable,Account_Payable,NULL,BS.102+BS.104+BS.106+BS.107+BS.108+BS.109+BS.110+BS.116,1,NULL,19,Billion,NULL,37:54.8,ducle@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1273,Diamond,Balance Sheet,Security,Account receivable,Account_Receivable,NULL,BS.11,1,NULL,11,Billion,NULL,01:45.3,ducle@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1282,Diamond,Balance Sheet,Security,Advanced from customer,Advanced_Customer,NULL,BS.105+BS.129,1,NULL,20,Billion,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1312,Diamond,Income Statement,Security,Gain/(loss) in affliates divestments,Affiliates_Divestment,NULL,IS.46,1,NULL,56,Billion,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1266,Diamond,Balance Sheet,Security,AFS market value,AFS_MV,NULL,BS.9+BS.58,1,NULL,3,Billion,NULL,21:36.9,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1258,Diamond,Overview,Security,Analyst,Analyst,NULL,NULL,1,NULL,2,NULL,NULL,01:33.7,tri.pham@dragoncapital.com,0,Text,0,0,0,0,NULL
+1350,Ratio,Asset & Equity Structure,Security,Asset/ Equity,Asset_Equity,NULL,TOTAL_Asset/TOTAL_Equity,1,NULL,6,NULL,0,56:47.1,hai@athenapros.com,0,NULL,0,0,0,0,NULL
+1291,Diamond,Balance Sheet,Security,Asset revaluation,Asset_Revaluation,NULL,BS.152,1,NULL,30,Billion,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1314,Diamond,Income Statement,Security,Income from associate companies,Associate_Income,NULL,IS.55+IS.47,1,NULL,58,Billion,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1866,Diamond,Supplements,Security,Book value,Book_value,NULL,Total_Equity-Minority_Interest,1,NULL,6,Billion,NULL,29:23.1,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1610,Diamond,Supplements,Security,Book value/share,Book_value_share,NULL,(Total_Equity-Minority_Interest)/OS,1,NULL,1,NULL,NULL,28:23.0,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1360,BS,NULL,Security,CURRENT ASSETS,BS.1,BSA1,NULL,1,NULL,1,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1369,BS,NULL,Security,Provision for diminution,BS.10,BSA7,NULL,1,NULL,10,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1459,BS,NULL,Security,Short term bonds issued,BS.100,BSS242,NULL,1,NULL,100,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1460,BS,NULL,Security,Borrowings form payable assistance fund,BS.101,BSS243,NULL,1,NULL,101,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1461,BS,NULL,Security,Payables to securities trading,BS.102,BSS135,NULL,1,NULL,102,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1462,BS,NULL,Security,Payable arise from transaction errors,BS.103,BSS244,NULL,1,NULL,103,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1463,BS,NULL,Security,Trade accounts payable,BS.104,BSA57,NULL,1,NULL,104,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1464,BS,NULL,Security,Advances from customers,BS.105,BSA58,NULL,1,NULL,105,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1465,BS,NULL,Security,Taxes and other payable to State Budget,BS.106,BSA59,NULL,1,NULL,106,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1466,BS,NULL,Security,Payable to employees,BS.107,BSA60,NULL,1,NULL,107,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1467,BS,NULL,Security,Employees' welfare payable to authorities,BS.108,BSS245,NULL,1,NULL,108,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1468,BS,NULL,Security,Accrued expenses,BS.109,BSA61,NULL,1,NULL,109,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1370,BS,NULL,Security,Accounts receivable,BS.11,BSA8,NULL,1,NULL,11,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1469,BS,NULL,Security,Intercompany payables,BS.110,BSA62,NULL,1,NULL,110,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1470,BS,NULL,Security,Short-term unrealized revenue,BS.111,BSA167,NULL,1,NULL,111,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1471,BS,NULL,Security,Short term collaterals received,BS.112,BSS246,NULL,1,NULL,112,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1472,BS,NULL,Security,Construction contract in progress payables (Before 2016),BS.113,BSA63,NULL,1,NULL,113,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1473,BS,NULL,Security,"Dividend, principal and interest payables (Before 2016)",BS.114,BSS136,NULL,1,NULL,114,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1474,BS,NULL,Security,Payables to securities issuers (Before 2016),BS.115,BSS137,NULL,1,NULL,115,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1475,BS,NULL,Security,Other payables,BS.116,BSA64,NULL,1,NULL,116,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1476,BS,NULL,Security,Provision for ST liabilities,BS.117,BSA65,NULL,1,NULL,117,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1477,BS,NULL,Security,Bonus and welfare funds,BS.118,BSA66,NULL,1,NULL,118,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1478,BS,NULL,Security,Price stabilization fund (Before 2016),BS.119,BSA168,NULL,1,NULL,119,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1371,BS,NULL,Security,Receivables (from 2016),BS.12,BSS217,NULL,1,NULL,12,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1479,BS,NULL,Security,Government bonds purchased for resale,BS.120,BSA169,NULL,1,NULL,120,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1480,BS,NULL,Security,Long-term liabilities,BS.121,BSA67,NULL,1,NULL,121,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1481,BS,NULL,Security,Long-term borrowings,BS.122,BSA71,NULL,1,NULL,122,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1482,BS,NULL,Security,Long term borrowings,BS.123,BSS247,NULL,1,NULL,123,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1483,BS,NULL,Security,Long term financial lease,BS.124,BSS248,NULL,1,NULL,124,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1484,BS,NULL,Security,Long term financial assets borrowings,BS.125,BSS249,NULL,1,NULL,125,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1485,BS,NULL,Security,Convertible bonds,BS.126,BSA173,NULL,1,NULL,126,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1486,BS,NULL,Security,Long term bonds,BS.127,BSS250,NULL,1,NULL,127,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1487,BS,NULL,Security,Long-term trade payables,BS.128,BSA68,NULL,1,NULL,128,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1488,BS,NULL,Security,Long-term advances from customers,BS.129,BSA170,NULL,1,NULL,129,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1372,BS,NULL,Security,Trade accounts receivable (Before 2016),BS.13,BSA9,NULL,1,NULL,13,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1489,BS,NULL,Security,Long-term accrued expenses,BS.130,BSA171,NULL,1,NULL,130,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1490,BS,NULL,Security,Long-term intercompany payables,BS.131,BSA69,NULL,1,NULL,131,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1491,BS,NULL,Security,Intra-company payables for operating capital received (Before 2016),BS.132,BSA172,NULL,1,NULL,132,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1492,BS,NULL,Security,Deffered revenue,BS.133,BSA76,NULL,1,NULL,133,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1493,BS,NULL,Security,Long term collaterals received,BS.134,BSS251,NULL,1,NULL,134,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1494,BS,NULL,Security,Other long-term payables,BS.135,BSA70,NULL,1,NULL,135,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1495,BS,NULL,Security,Preferred shares (Before 2016),BS.136,BSA174,NULL,1,NULL,136,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1496,BS,NULL,Security,Provision for severance allowances (Before 2016),BS.137,BSA73,NULL,1,NULL,137,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1497,BS,NULL,Security,Provision for long-term liabilities,BS.138,BSA74,NULL,1,NULL,138,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1498,BS,NULL,Security,Provision for compensation of investors,BS.139,BSS138,NULL,1,NULL,139,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1373,BS,NULL,Security,Account receivables,BS.14,BSS218,NULL,1,NULL,14,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1499,BS,NULL,Security,Deferred income tax liabilities,BS.140,BSA72,NULL,1,NULL,140,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1500,BS,NULL,Security,Technology-science development fund,BS.141,BSA77,NULL,1,NULL,141,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1501,BS,NULL,Security,OWNER'S EQUITY,BS.142,BSA78,NULL,1,NULL,142,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1502,BS,NULL,Security,Capital and researves,BS.143,BSA79,NULL,1,NULL,143,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1503,BS,NULL,Security,Shareholders' equity,BS.144,BSS252,NULL,1,NULL,144,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1504,BS,NULL,Security,Paid-in capital,BS.145,BSA80,NULL,1,NULL,145,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1505,BS,NULL,Security,Common shares,BS.146,BSA175,NULL,1,NULL,146,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1506,BS,NULL,Security,Preferred shares,BS.147,BSB120,NULL,1,NULL,147,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1507,BS,NULL,Security,Capital surplus,BS.148,BSA81,NULL,1,NULL,148,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1508,BS,NULL,Security,Conversion options on convertible bonds,BS.149,BSA176,NULL,1,NULL,149,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1374,BS,NULL,Security,Deductible value added tax (Before 2016),BS.15,BSS223,NULL,1,NULL,15,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1509,BS,NULL,Security,Owner's other capital,BS.150,BSA82,NULL,1,NULL,150,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1510,BS,NULL,Security,Treasury shares,BS.151,BSA83,NULL,1,NULL,151,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1511,BS,NULL,Security,Differences upon asset revaluation,BS.152,BSA84,NULL,1,NULL,152,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1512,BS,NULL,Security,Foreign exchange differences,BS.153,BSA85,NULL,1,NULL,153,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1513,BS,NULL,Security,Charter reserve,BS.154,BSS253,NULL,1,NULL,154,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1514,BS,NULL,Security,Investment and development funds (Before 2016),BS.155,BSA86,NULL,1,NULL,155,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1515,BS,NULL,Security,Financial reserve funds,BS.156,BSA87,NULL,1,NULL,156,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1516,BS,NULL,Security,Other funds,BS.157,BSA89,NULL,1,NULL,157,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1517,BS,NULL,Security,Undistributed earnings,BS.158,BSA90,NULL,1,NULL,158,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1518,BS,NULL,Security,Realized gain,BS.159,BSS254,NULL,1,NULL,159,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1375,BS,NULL,Security,Receivables and accrued dividend/interest of financial assets,BS.16,BSS219,NULL,1,NULL,16,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1519,BS,NULL,Security,Beginning accumulated undistributed earnings,BS.160,BSA177,NULL,1,NULL,160,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1520,BS,NULL,Security,Current period undistributed earnings,BS.161,BSA178,NULL,1,NULL,161,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1521,BS,NULL,Security,Unrealized gain,BS.162,BSS255,NULL,1,NULL,162,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1522,BS,NULL,Security,Minority interests,BS.163,BSA210,NULL,1,NULL,163,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1523,BS,NULL,Security,Budget sources and other funds,BS.164,BSA92,NULL,1,NULL,164,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1524,BS,NULL,Security,Bonus and welfare funds (Before 2010),BS.165,BSA93,NULL,1,NULL,165,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1525,BS,NULL,Security,Budget sources and other funds,BS.166,BSA94,NULL,1,NULL,166,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1526,BS,NULL,Security,Funds used for fixed asset acquisitions,BS.167,BSA211,NULL,1,NULL,167,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1527,BS,NULL,Security,MINORITY INTERESTS (before 2015),BS.168,BSA95,NULL,1,NULL,168,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1528,BS,NULL,Security,TOTAL RESOURCES,BS.169,BSA96,NULL,1,NULL,169,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1376,BS,NULL,Security,Due or overdue receivables on dividend/interest,BS.17,BSS220,NULL,1,NULL,17,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1529,BS,NULL,Security,Distributed profit to investor,BS.170,BSS256,NULL,1,NULL,170,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1530,BS,NULL,Security,Distributed profit to investor during the year,BS.171,BSS257,NULL,1,NULL,171,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1377,BS,NULL,Security,Doubtful debts on dividend/interest which are overdue,BS.18,BSS221,NULL,1,NULL,18,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1378,BS,NULL,Security,Undue accrued dividend/interest,BS.19,BSS222,NULL,1,NULL,19,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1361,BS,NULL,Security,Short term financial assets,BS.2,NULL,NULL,1,NULL,2,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1379,BS,NULL,Security,Receivables form services provided by the stock company,BS.20,BSS224,NULL,1,NULL,20,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1380,BS,NULL,Security,Prepayments to suppliers,BS.21,BSA10,NULL,1,NULL,21,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1381,BS,NULL,Security,Intercompany receivables,BS.22,BSA11,NULL,1,NULL,22,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1382,BS,NULL,Security,Receivables arise from transaction error,BS.23,BSS225,NULL,1,NULL,23,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1383,BS,NULL,Security,Receivable from trading stocks (Before 2016),BS.24,BSS133,NULL,1,NULL,24,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1384,BS,NULL,Security,Construction contract in progress receivables (Before 2016),BS.25,BSA12,NULL,1,NULL,25,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1385,BS,NULL,Security,Short-term loans receivables (Before 2016),BS.26,BSA159,NULL,1,NULL,26,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1386,BS,NULL,Security,Other receivables,BS.27,BSA13,NULL,1,NULL,27,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1387,BS,NULL,Security,Provision for short term receivables,BS.28,BSS226,NULL,1,NULL,28,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1388,BS,NULL,Security,Provision for doubtful debts (Before 2016),BS.29,BSA14,NULL,1,NULL,29,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1362,BS,NULL,Security,Cash and cash equivalents,BS.3,BSA2,NULL,1,NULL,3,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1389,BS,NULL,Security,Shortage of current assets waiting for solution (Before 2016),BS.30,BSI141,NULL,1,NULL,30,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1390,BS,NULL,Security,"Inventories, Net (Before 2016)",BS.31,BSA15,NULL,1,NULL,31,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1391,BS,NULL,Security,Inventories (Before 2016),BS.32,BSA16,NULL,1,NULL,32,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1392,BS,NULL,Security,Provision for decline in inventories (Before 2016),BS.33,BSA17,NULL,1,NULL,33,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1393,BS,NULL,Security,Other current assets,BS.34,BSA18,NULL,1,NULL,34,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1394,BS,NULL,Security,Advance,BS.35,BSS227,NULL,1,NULL,35,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1395,BS,NULL,Security,Tools and equipments,BS.36,BSS228,NULL,1,NULL,36,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1396,BS,NULL,Security,Short-term prepayments,BS.37,BSA19,NULL,1,NULL,37,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1397,BS,NULL,Security,Short term Collaterals,BS.38,BSS229,NULL,1,NULL,38,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1398,BS,NULL,Security,VAT to be claimed,BS.39,BSA20,NULL,1,NULL,39,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1363,BS,NULL,Security,Cash,BS.4,BSA3,NULL,1,NULL,4,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1399,BS,NULL,Security,Other taxes receivable,BS.40,BSA21,NULL,1,NULL,40,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1400,BS,NULL,Security,Government bonds purchased for resale,BS.41,BSA160,NULL,1,NULL,41,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1401,BS,NULL,Security,Other current assets,BS.42,BSA22,NULL,1,NULL,42,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1402,BS,NULL,Security,Provision for other current assets,BS.43,BSS230,NULL,1,NULL,43,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1403,BS,NULL,Security,LONG-TERM ASSETS,BS.44,BSA23,NULL,1,NULL,44,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1404,BS,NULL,Security,Long term financial assets,BS.45,NULL,NULL,1,NULL,45,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1405,BS,NULL,Security,Long-term trade receivables,BS.46,BSA24,NULL,1,NULL,46,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1406,BS,NULL,Security,Long-term trade receivables,BS.47,BSA25,NULL,1,NULL,47,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1407,BS,NULL,Security,Long-term prepayments to suppliers (Before 2016),BS.48,BSA161,NULL,1,NULL,48,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1408,BS,NULL,Security,Paid-in capital in wholly-owned subsidiaries (Before 2016),BS.49,BSS134,NULL,1,NULL,49,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1364,BS,NULL,Security,Cash equivalents,BS.5,BSA4,NULL,1,NULL,5,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1409,BS,NULL,Security,Long-term intercompany receivables (Before 2016),BS.50,BSA26,NULL,1,NULL,50,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1410,BS,NULL,Security,Long-term loans receivables (Before 2016),BS.51,BSA162,NULL,1,NULL,51,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1411,BS,NULL,Security,Other long-term receivables (Before 2016),BS.52,BSA27,NULL,1,NULL,52,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1412,BS,NULL,Security,Provision for doubtful LT receivable (Before 2016),BS.53,BSA28,NULL,1,NULL,53,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1413,BS,NULL,Security,Long-term investments,BS.54,BSA43,NULL,1,NULL,54,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1414,BS,NULL,Security,Investments in subsidiaries,BS.55,BSA44,NULL,1,NULL,55,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1415,BS,NULL,Security,Investments in associates,BS.56,BSA45,NULL,1,NULL,56,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1416,BS,NULL,Security,Long-term securities investment,BS.57,BSS189,NULL,1,NULL,57,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1417,BS,NULL,Security,Available-for-sales securities,BS.58,BSS213,NULL,1,NULL,58,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1418,BS,NULL,Security,Held-to-maturity investment,BS.59,BSA165,NULL,1,NULL,59,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1365,BS,NULL,Security,Short-term investments,BS.6,BSA6,NULL,1,NULL,6,NULL,NULL,52:13.7,ducle@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1419,BS,NULL,Security,Other long-term investments,BS.60,BSA46,NULL,1,NULL,60,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1420,BS,NULL,Security,Provision for long-term investments,BS.61,BSA47,NULL,1,NULL,61,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1421,BS,NULL,Security,Fixed assets,BS.62,BSA29,NULL,1,NULL,62,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1422,BS,NULL,Security,Tangible fixed assets,BS.63,BSA30,NULL,1,NULL,63,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1423,BS,NULL,Security,Cost,BS.64,BSA31,NULL,1,NULL,64,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1424,BS,NULL,Security,Accumulated depreciation,BS.65,BSA32,NULL,1,NULL,65,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1425,BS,NULL,Security,Revaluation of tangible fixed assets using fair value model,BS.66,NULL,NULL,1,NULL,66,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1426,BS,NULL,Security,Finance lease assets,BS.67,BSA33,NULL,1,NULL,67,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1427,BS,NULL,Security,Cost,BS.68,BSA34,NULL,1,NULL,68,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1428,BS,NULL,Security,Accumulated depreciation,BS.69,BSA35,NULL,1,NULL,69,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1366,BS,NULL,Security,Held-to-maturity investment,BS.7,BSB108,NULL,1,NULL,7,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1429,BS,NULL,Security,Revaluation of fixed assets in financial lease using fair value model,BS.70,BSS232,NULL,1,NULL,70,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1430,BS,NULL,Security,Intangible fixed assets,BS.71,BSA36,NULL,1,NULL,71,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1431,BS,NULL,Security,Cost,BS.72,BSA37,NULL,1,NULL,72,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1432,BS,NULL,Security,Accumulated depreciation,BS.73,BSA38,NULL,1,NULL,73,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1433,BS,NULL,Security,Revaluation of intangible fixed assets using fair value model,BS.74,BSS233,NULL,1,NULL,74,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1434,BS,NULL,Security,Construction in progress (before 2015),BS.75,BSA39,NULL,1,NULL,75,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1435,BS,NULL,Security,Investment properties,BS.76,BSA40,NULL,1,NULL,76,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1436,BS,NULL,Security,Cost,BS.77,BSA41,NULL,1,NULL,77,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1437,BS,NULL,Security,Accumulated depreciation,BS.78,BSA42,NULL,1,NULL,78,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1438,BS,NULL,Security,Revaluation of investment property using fair value model,BS.79,BSS234,NULL,1,NULL,79,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1367,BS,NULL,Security,Loans,BS.8,BSS215,NULL,1,NULL,8,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1439,BS,NULL,Security,Long-term incomplete assets,BS.80,BSA163,NULL,1,NULL,80,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1440,BS,NULL,Security,Long-term cost of work in progress,BS.81,BSA164,NULL,1,NULL,81,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1441,BS,NULL,Security,Construction in progress,BS.82,BSA188,NULL,1,NULL,82,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1442,BS,NULL,Security,Other long-term assets,BS.83,BSA49,NULL,1,NULL,83,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1443,BS,NULL,Security,Long term collaterals,BS.84,BSS236,NULL,1,NULL,84,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1444,BS,NULL,Security,Long-term prepayments,BS.85,BSA50,NULL,1,NULL,85,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1445,BS,NULL,Security,Deferred income tax assets,BS.86,BSA51,NULL,1,NULL,86,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1446,BS,NULL,Security,"Long-term equipment, material and spare parts",BS.87,BSA166,NULL,1,NULL,87,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1447,BS,NULL,Security,Payments to Settlement Assistance Fund,BS.88,BSS212,NULL,1,NULL,88,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1448,BS,NULL,Security,Other long-term assets,BS.89,BSA52,NULL,1,NULL,89,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1368,BS,NULL,Security,Available for sales assets,BS.9,BSS216,NULL,1,NULL,9,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1449,BS,NULL,Security,Goodwill,BS.90,BSA209,NULL,1,NULL,90,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1450,BS,NULL,Security,Provision for long term assets,BS.91,BSS237,NULL,1,NULL,91,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1451,BS,NULL,Security,TOTAL ASSETS,BS.92,BSA53,NULL,1,NULL,92,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1452,BS,NULL,Security,LIABILITIES,BS.93,BSA54,NULL,1,NULL,93,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1453,BS,NULL,Security,Current liabilities,BS.94,BSA55,NULL,1,NULL,94,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1454,BS,NULL,Security,Short-term borrowings,BS.95,BSA56,NULL,1,NULL,95,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1455,BS,NULL,Security,Short term borrowings,BS.96,BSS238,NULL,1,NULL,96,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1456,BS,NULL,Security,Short term finance lease,BS.97,BSS239,NULL,1,NULL,97,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1457,BS,NULL,Security,Short term financial assets borrowings,BS.98,BSS240,NULL,1,NULL,98,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+1458,BS,NULL,Security,Short term convertible bonds,BS.99,BSS241,NULL,1,NULL,99,NULL,NULL,56:45.8,NULL,0,NULL,0,0,0,0,NULL
+2091,Diamond,Consensus,Security,BSC,BSC,NULL,NULL,1,NULL,79,NULL,NULL,33:54.2,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2092,Diamond,Consensus,Security,BSC.NPATMI,BSC.NPATMI,NULL,NULL,1,NULL,80,Billion,NULL,34:12.2,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2093,Diamond,Consensus,Security,BSC.Target_Price,BSC.Target_Price,NULL,NULL,1,NULL,81,NULL,NULL,34:23.7,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2132,Ratio,Valuation ,Security,BVPS,BVPS,NULL,(Total_Equity-Minority_Interest)/OS,1,NULL,5,NULL,NULL,23:12.1,ducle@dragoncapital.com,0,NULL,0,0,0,1,NULL
+2106,Diamond,Consensus,Security,BVS,BVS,NULL,NULL,1,NULL,94,NULL,NULL,37:42.8,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2107,Diamond,Consensus,Security,BVS.NPATMI,BVS.NPATMI,NULL,NULL,1,NULL,95,Billion,NULL,37:57.4,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2108,Diamond,Consensus,Security,BVS.Target_Price,BVS.Target_Price,NULL,NULL,1,NULL,96,NULL,NULL,38:13.0,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2166,Diamond,Consensus,Security,BVSC,BVSC,NULL,NULL,1,NULL,0,NULL,NULL,30:27.7,chinhtruong@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2167,Diamond,Consensus,Security,BVSC.NPATMI,BVSC.NPATMI,NULL,NULL,1,NULL,0,Billion,NULL,30:27.7,chinhtruong@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2168,Diamond,Consensus,Security,BVSC.Target_Price,BVSC.Target_Price,NULL,NULL,1,NULL,0,NULL,NULL,30:27.7,chinhtruong@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1272,Diamond,Balance Sheet,Security,Cash and equivalent,Cash_Equivalent,NULL,BS.3,1,NULL,10,Billion,NULL,55:55.9,tri.pham@dragoncapital.com,0,NULL,0,0,0,1,NULL
+1618,CF,NULL,Security,Dividends paid,CF.35,CFA32,NULL,1,NULL,1,Billion,NULL,12:32.5,ducle@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1355,Ratio,Profitability and Dividend,Security,CIR,CIR,NULL,#NAME?,1,NULL,11,NULL,0,06:24.4,hai@athenapros.com,0,NULL,0,0,0,0,NULL
+1863,Diamond,Overview,Security,Comment,Comment,NULL,NULL,1,NULL,9,NULL,NULL,00:21.3,tri.pham@dragoncapital.com,0,Text,0,0,0,0,NULL
+1633,Diamond,X-Factor,Security,Company Aspects,Company_Aspects,NULL,(Corporate_governance+Financial_health)/2,1,NULL,91,NULL,0,53:00.1,duynguyen@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1290,Diamond,Balance Sheet,Security,Conversion option on convertible bond,Conversion_Bond,NULL,BS.149,1,NULL,29,Billion,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1335,Diamond,X-Factor,Security,Corporate Governance,Corporate_governance,NULL,NULL,1,NULL,79,NULL,NULL,57:50.0,ducle@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1264,Diamond,Overview,Security,Coverage Status,Coverage_Status,NULL,NULL,1,NULL,8,NULL,NULL,02:01.0,tri.pham@dragoncapital.com,0,Text,0,0,0,0,NULL
+2097,Diamond,Consensus,Security,CS,CS,NULL,NULL,1,NULL,85,NULL,NULL,35:21.0,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2098,Diamond,Consensus,Security,CS.NPATMI,CS.NPATMI,NULL,NULL,1,NULL,86,Billion,NULL,35:35.9,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2099,Diamond,Consensus,Security,CS.Target_Price,CS.Target_Price,NULL,NULL,1,NULL,87,NULL,NULL,35:50.4,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1260,Diamond,Overview,Security,Current Price,Current_Price,NULL,NULL,1,NULL,4,NULL,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1349,Ratio,Asset & Equity Structure,Security,Debt/  Equity,Debt_Equity,NULL,(ST_Debt+LT_Debt)/TOTAL_Equity,1,NULL,5,NULL,0,06:13.6,hai@athenapros.com,0,NULL,0,0,0,1,Total_Debt/TOTAL_Equity
+1311,Diamond,Income Statement,Security,Deposit income,Deposit_Income,NULL,IS.45,1,NULL,55,Billion,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1619,Diamond,Supplements,Security,Dividend paid,Dividend,NULL,CF.35,1,NULL,4,Billion,NULL,25:29.6,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1620,Ratio,Profitability and Dividend,Security,Dividend Payout Ratio %,Dividend_Payout_Ratio,NULL,#NAME?,1,NULL,16,NULL,0,16:52.1,ducle@dragoncapital.com,0,NULL,0,1,0,0,NULL
+1621,Ratio,Profitability and Dividend,Security,Dividend Yield (%),Dividend_Ratio,NULL,#NAME?,1,NULL,17,NULL,0,16:20.9,ducle@dragoncapital.com,0,NULL,1,1,0,0,NULL
+1315,Diamond,Income Statement,Security,EBIT,EBIT,NULL,Net_revenue+SG_A+FX_Income+Deposit_Income+Affiliates_Divestment+Net_Other_Income+Associate_Income,1,NULL,59,Billion,NULL,31:20.1,ducle@dragoncapital.com,1,NULL,0,0,0,0,NULL
+2128,Diamond,Consensus,Security,EFG Hermes,EFG-H,NULL,NULL,1,NULL,0,NULL,NULL,31:50.4,duynguyen@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2129,Diamond,Consensus,Security,EFG-H.NPATMI,EFG-H.NPATMI,NULL,NULL,1,NULL,0,Billion,NULL,31:50.4,duynguyen@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2130,Diamond,Consensus,Security,EFG-H.Target_Price,EFG-H.Target_Price,NULL,NULL,1,NULL,0,NULL,NULL,31:50.4,duynguyen@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1612,Diamond,Income Statement,Security,Basic EPS,EPS,NULL,NPATMIWF/OS,1,NULL,70,NULL,NULL,57:55.7,tri.pham@dragoncapital.com,1,NULL,1,0,0,1,NULL
+1336,Diamond,X-Factor,Security,Financial,Financial_health,NULL,NULL,1,NULL,80,NULL,NULL,57:53.4,ducle@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1276,Diamond,Balance Sheet,Security,Fixed asset,Fixed_Asset,NULL,BS.62,1,NULL,14,Billion,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1343,Diamond,X-Factor,Security,Future Flow,Flow,NULL,NULL,1,NULL,87,NULL,NULL,23:43.3,ducle@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2109,Diamond,Consensus,Security,FPTS,FPTS,NULL,NULL,1,NULL,97,NULL,NULL,38:25.1,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2110,Diamond,Consensus,Security,FPTS.NPATMI,FPTS.NPATMI,NULL,NULL,1,NULL,98,Billion,NULL,38:39.9,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2111,Diamond,Consensus,Security,FPTS.Target_Price,FPTS.Target_Price,NULL,NULL,1,NULL,99,NULL,NULL,38:57.5,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1634,Diamond,X-Factor,Security,Future Aspects,Future_Aspects,NULL,(12m_growth_prospect+Long_term_growth_prospect+Sector_prospect)/3,1,NULL,92,NULL,0,53:21.9,duynguyen@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1265,Diamond,Balance Sheet,Security,FVTPL market value,FVTPL_MV,NULL,BS.6,1,NULL,2,Billion,NULL,21:31.4,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1310,Diamond,Income Statement,Security,FX gain/(loss),FX_Income,NULL,IS.44+IS.50,1,NULL,54,Billion,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1303,Diamond,Supplements,Security,Gross brokerage expense,Gross_brokerage_expense,NULL,IS.33,1,NULL,8,Billion,NULL,05:14.1,ducle@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1302,Diamond,Supplements,Security,Gross brokerage Income,Gross_brokerage_Income,NULL,IS.10,1,NULL,7,Billion,NULL,05:06.2,ducle@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2154,Diamond,Consensus,Security,Guidance,Guidance,NULL,NULL,1,NULL,0,NULL,NULL,59:13.7,duynguyen@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2155,Diamond,Consensus,Security,Guidance.NPATMI,Guidance.NPATMI,NULL,NULL,1,NULL,0,Billion,NULL,59:13.7,duynguyen@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2156,Diamond,Consensus,Security,Guidance.Target_Price,Guidance.Target_Price,NULL,NULL,1,NULL,0,NULL,NULL,59:13.7,duynguyen@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1329,Diamond,Consensus,Security,HSC,HSC,NULL,NULL,1,NULL,73,NULL,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1330,Diamond,Consensus,Security,HSC.NPATMI,HSC.NPATMI,NULL,NULL,1,NULL,74,Billion,NULL,33:04.0,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1331,Diamond,Consensus,Security,HSC.Target_Price,HSC.Target_Price,NULL,NULL,1,NULL,75,NULL,NULL,33:12.8,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1268,Diamond,Balance Sheet,Security,HTM book value,HTM_BV,NULL,BS.7+BS.59,1,NULL,5,Billion,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1357,Ratio,Capital Efficiency,Security,Interest coverage ratio,Interest_Coverage_Ratio,NULL,#NAME?,1,NULL,13,NULL,0,06:44.7,hai@athenapros.com,0,NULL,0,1,0,0,NULL
+1605,Diamond,Balance Sheet,Security,INTEREST EARNING ASSET,Interest_Earning_Asset,NULL,HTM_BV+FVTPL_MV+AFS_MV+INVESTMENT_PROVISION+MARGIN_LENDING_BOOK+OTHER_INVESTMENT_ASSET,1,NULL,1,Billion,NULL,33:11.7,ducle@dragoncapital.com,1,NULL,0,0,0,0,NULL
+1316,Diamond,Income Statement,Security,Interest Expense,Interest_Expense,NULL,IS.51,1,NULL,60,Billion,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1274,Diamond,Balance Sheet,Security,Investment in sub & associate,Investment_associate,NULL,BS.55+BS.56,1,NULL,12,Billion,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1347,Ratio,Asset & Equity Structure,Security,Investment/ Equity,Investment_Equity,NULL,(FVTPL_MV+AFS_MV+Investment_provision+HTM_BV+Other_Investment_Asset)/TOTAL_Equity,1,NULL,3,NULL,0,54:28.8,hai@athenapros.com,0,NULL,0,0,0,0,NULL
+1275,Diamond,Balance Sheet,Security,Investment in properties,Investment_Property,NULL,BS.76+BS.80,1,NULL,13,Billion,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1267,Diamond,Balance Sheet,Security,Investment provision,Investment_provision,NULL,BS.10,1,NULL,4,Billion,NULL,21:43.8,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1345,Ratio,Asset & Equity Structure,Security,Investment/ Total Asset,Investment_TotalAsset,NULL,(FVTPL_MV+AFS_MV+Investment_provision+HTM_BV+Other_Investment_Asset)/TOTAL_Asset,1,NULL,1,NULL,0,20:58.7,hai@athenapros.com,0,NULL,0,0,0,0,NULL
+1353,Ratio,Capital Efficiency,Security,Investment yield,Investment_Yield,NULL,Net_Investment/(Average2Y_FVTPL_MV+Average2Y_AFS_MV+Average2Y_Investment_provision+Average2Y_HTM_BV),1,NULL,3,NULL,0,58:41.2,hai@athenapros.com,0,NULL,0,1,0,0,NULL
+1531,IS,NULL,Security,OPERATING SALES,IS.1,ISA1,NULL,1,NULL,1,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1540,IS,NULL,Security,Revenue in Brokerage services,IS.10,ISS42,NULL,1,NULL,10,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1541,IS,NULL,Security,Revenue in Underwriting services,IS.11,ISS44,NULL,1,NULL,11,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1542,IS,NULL,Security,Revenue in Issuance agency services,IS.12,ISS45,NULL,1,NULL,12,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1543,IS,NULL,Security,Revenue in Advisory services,IS.13,ISS46,NULL,1,NULL,13,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1544,IS,NULL,Security,Revenue in Securities custody services,IS.14,ISS47,NULL,1,NULL,14,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1545,IS,NULL,Security,Revenue in Auction trust services (Before 2016),IS.15,ISS48,NULL,1,NULL,15,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1546,IS,NULL,Security,Revenue in Securities investment and other investment activities (Before 2016),IS.16,ISS43,NULL,1,NULL,16,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1547,IS,NULL,Security,Rental income from investment property (Before 2016),IS.17,ISS49,NULL,1,NULL,17,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1548,IS,NULL,Security,Revenue from advisory services,IS.18,ISS123,NULL,1,NULL,18,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1549,IS,NULL,Security,Others revenue,IS.19,ISS50,NULL,1,NULL,19,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1532,IS,NULL,Security,Income from financial assets regconized through profit/loss (FVTPL),IS.2,ISS115,NULL,1,NULL,2,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1550,IS,NULL,Security,Sales deductions,IS.20,ISA2,NULL,1,NULL,20,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1551,IS,NULL,Security,Net sales,IS.21,ISA3,NULL,1,NULL,21,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1552,IS,NULL,Security,OPERATING EXPANSE,IS.22,ISA4,NULL,1,NULL,22,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1553,IS,NULL,Security,Loss from financial assets recognized through profit/loss (FVTPL),IS.23,ISS124,NULL,1,NULL,23,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1554,IS,NULL,Security,Loss from selling financial assets FVTPL,IS.24,ISS125,NULL,1,NULL,24,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1555,IS,NULL,Security,FVTPL financial assets revaluation loss,IS.25,ISS126,NULL,1,NULL,25,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1556,IS,NULL,Security,FVTPL financial assets purchase transaction costs,IS.26,ISS127,NULL,1,NULL,26,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1557,IS,NULL,Security,Loss form held to maturity investment (HTM),IS.27,ISS128,NULL,1,NULL,27,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1558,IS,NULL,Security,"Interest cost, loss from loans and receivables  (Before 2016)",IS.28,ISS129,NULL,1,NULL,28,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1559,IS,NULL,Security,Loss from available for sales assets (AFS),IS.29,ISS130,NULL,1,NULL,29,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1533,IS,NULL,Security,Income from selling financial assets FVTPL,IS.3,ISS116,NULL,1,NULL,3,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1560,IS,NULL,Security,"Provision for losses from mortgage assets, uncollectible receivables, and borrowing expenses",IS.30,ISS168,NULL,1,NULL,30,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1561,IS,NULL,Security,Loss from derivatives,IS.31,ISS131,NULL,1,NULL,31,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1562,IS,NULL,Security,Proprietary trading services expenses,IS.32,ISS132,NULL,1,NULL,32,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1563,IS,NULL,Security,Brokerage expenses,IS.33,ISS133,NULL,1,NULL,33,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1564,IS,NULL,Security,"Underwriting, securities issuance expenses",IS.34,ISS134,NULL,1,NULL,34,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1565,IS,NULL,Security,Expenses for securities advisory,IS.35,ISS135,NULL,1,NULL,35,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1566,IS,NULL,Security,Bidding agent service expenses,IS.36,ISS136,NULL,1,NULL,36,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1567,IS,NULL,Security,Investor' securities depository expenses,IS.37,ISS137,NULL,1,NULL,37,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1568,IS,NULL,Security,Expenses for financial advisory activities,IS.38,ISS138,NULL,1,NULL,38,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1569,IS,NULL,Security,Other expenses,IS.39,ISS139,NULL,1,NULL,39,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1534,IS,NULL,Security,FVTPL revaluation gain,IS.4,ISS117,NULL,1,NULL,4,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1570,IS,NULL,Security,Expenses arise from securities transaction errors and other errors,IS.40,ISS140,NULL,1,NULL,40,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1571,IS,NULL,Security,Cost of sales,IS.41,ISA4,NULL,1,NULL,41,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1572,IS,NULL,Security,Gross Profit,IS.42,ISA5,NULL,1,NULL,42,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1573,IS,NULL,Security,REVENUE FROM FINANCIAL ACTIVITIES,IS.43,ISS141,NULL,1,NULL,43,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1574,IS,NULL,Security,Realized and unrealized foreign exchange gain,IS.44,ISS142,NULL,1,NULL,44,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1575,IS,NULL,Security,Income from non fixed accrued dividend and interest,IS.45,ISS143,NULL,1,NULL,45,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1576,IS,NULL,Security,"Gain from disposals or sales of investments in subsidiaries, associates and joint ventures",IS.46,ISS144,NULL,1,NULL,46,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1577,IS,NULL,Security,Other revenue from investments,IS.47,ISS145,NULL,1,NULL,47,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1578,IS,NULL,Security,Revenue from financial activities,IS.48,ISS141,NULL,1,NULL,48,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1579,IS,NULL,Security,EXPENSE FROM FINANCIAL ACTIVITIES,IS.49,ISS146,NULL,1,NULL,49,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1535,IS,NULL,Security,"Dividend, interest from FVTPL financial assets",IS.5,ISS118,NULL,1,NULL,5,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1580,IS,NULL,Security,Realized and unrealized foreign exchange loss,IS.50,ISS147,NULL,1,NULL,50,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1581,IS,NULL,Security,Interests expenses,IS.51,ISS148,NULL,1,NULL,51,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1582,IS,NULL,Security,"Loss from disposals or sales of investments in subsidiaries, associates and joint ventures",IS.52,ISS149,NULL,1,NULL,52,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1583,IS,NULL,Security,Provision for losses on long term financial investment,IS.53,ISS150,NULL,1,NULL,53,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1584,IS,NULL,Security,Other investment expenses,IS.54,ISS151,NULL,1,NULL,54,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1585,IS,NULL,Security,Gain/(loss) from joint ventures,IS.55,ISA102,NULL,1,NULL,55,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1586,IS,NULL,Security,Expense from financial activities,IS.56,ISS146,NULL,1,NULL,56,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1587,IS,NULL,Security,SELLING COST,IS.57,ISS152,NULL,1,NULL,57,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1588,IS,NULL,Security,GENERAL AND ADMINISTRATIVE EXPENSES,IS.58,ISA10,NULL,1,NULL,58,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1589,IS,NULL,Security,OPERATING PROFIT/(LOSS),IS.59,ISA11,NULL,1,NULL,59,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1536,IS,NULL,Security,Income from held to maturity investment (HTM),IS.6,ISS119,NULL,1,NULL,6,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1590,IS,NULL,Security,OTHER INCOME AND EXPENSES,IS.60,NULL,NULL,1,NULL,60,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1591,IS,NULL,Security,Other income,IS.61,ISA12,NULL,1,NULL,61,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1592,IS,NULL,Security,Other expenses,IS.62,ISA13,NULL,1,NULL,62,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1593,IS,NULL,Security,Net other income/expenses,IS.63,ISA14,NULL,1,NULL,63,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1594,IS,NULL,Security,Income from investments in other entities (before 2015),IS.64,ISA15,NULL,1,NULL,64,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1595,IS,NULL,Security,NET ACCOUNTING PROFIT/(LOSS) BEFORE TAX,IS.65,ISA16,NULL,1,NULL,65,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1596,IS,NULL,Security,Realized profit,IS.66,ISS153,NULL,1,NULL,66,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1597,IS,NULL,Security,Unrealized profit,IS.67,ISS154,NULL,1,NULL,67,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1598,IS,NULL,Security,BUSINESS INCOME TAX EXPENSES,IS.68,ISA19,NULL,1,NULL,68,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1599,IS,NULL,Security,Business income tax - current,IS.69,ISA17,NULL,1,NULL,69,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1537,IS,NULL,Security,Income from loans and receivables,IS.7,ISS120,NULL,1,NULL,7,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1600,IS,NULL,Security,Business income tax - deferred,IS.70,ISA18,NULL,1,NULL,70,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1601,IS,NULL,Security,NET PROFIT/(LOSS) AFTER TAX,IS.71,ISA20,NULL,1,NULL,71,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1602,IS,NULL,Security,Attributable to parent company,IS.72,ISA22,NULL,1,NULL,72,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1603,IS,NULL,Security,Profit after tax deducted of Funds,IS.73,ISS155,NULL,1,NULL,73,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1604,IS,NULL,Security,Minority interests,IS.74,ISA21,NULL,1,NULL,74,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1538,IS,NULL,Security,Income from available for sales assets (AFS),IS.8,ISS121,NULL,1,NULL,8,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1539,IS,NULL,Security,Income from derivatives,IS.9,ISS122,NULL,1,NULL,9,NULL,NULL,03:08.0,NULL,0,NULL,0,0,0,0,NULL
+1339,Diamond,X-Factor,Security,2-3Y Growth Prospect,Long_term_growth_prospect,NULL,NULL,1,NULL,83,NULL,NULL,58:10.9,ducle@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1262,Diamond,Overview,Security,Lower Bound,Lower_Bound_Price,NULL,NULL,1,NULL,6,NULL,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+2038,Diamond,Others,Security,LB Price Comment,Lower_Bound_Price_Comment,NULL,NULL,1,NULL,2,NULL,NULL,44:43.3,tri.pham@dragoncapital.com,0,Text,0,0,0,0,NULL
+1284,Diamond,Balance Sheet,Security,Long-term borrowing,LT_Debt,NULL,BS.122+BS.127,1,NULL,23,Billion,NULL,56:52.6,tri.pham@dragoncapital.com,0,NULL,0,0,0,1,NULL
+1269,Diamond,Balance Sheet,Security,Margin lending book,Margin_Lending_book,NULL,BS.8,1,NULL,6,Billion,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1352,Ratio,Capital Efficiency,Security,Margin lending rate,Margin_Lending_Rate,NULL,Net_Margin_lending_Income/Average2Y_Margin_Lending_Book,1,NULL,2,NULL,0,58:24.1,hai@athenapros.com,0,NULL,0,1,0,0,NULL
+1348,Ratio,Asset & Equity Structure,Security,Margin Lending/ Equity,MarginLending_Equity,NULL,Margin_Lending_book/TOTAL_Equity,1,NULL,4,NULL,0,02:53.4,hai@athenapros.com,0,NULL,0,0,0,0,NULL
+1346,Ratio,Asset & Equity Structure,Security,Margin lending/ Total asset,MarginLending_TotalAsset,NULL,Margin_Lending_book/TOTAL_Asset,1,NULL,2,NULL,0,56:01.3,hai@athenapros.com,0,NULL,0,0,0,0,NULL
+1342,Diamond,X-Factor,Security,Curent Market Aspect,Market_aspect,NULL,NULL,1,NULL,86,NULL,NULL,23:37.4,ducle@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1614,Diamond,Supplements,Security,Market Capitalization,MarketCap,NULL,Current_Price*OS,1,NULL,2,Billion,NULL,58:08.0,tri.pham@dragoncapital.com,0,NULL,1,0,0,0,NULL
+2112,Diamond,Consensus,Security,MAS,MAS,NULL,NULL,1,NULL,100,NULL,NULL,39:11.6,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2113,Diamond,Consensus,Security,MAS.NPATMI,MAS.NPATMI,NULL,NULL,1,NULL,101,Billion,NULL,39:23.9,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2114,Diamond,Consensus,Security,MAS.Target_Price,MAS.Target_Price,NULL,NULL,1,NULL,102,NULL,NULL,39:35.8,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2115,Diamond,Consensus,Security,MBKE,MBKE,NULL,NULL,1,NULL,103,NULL,NULL,39:45.9,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2116,Diamond,Consensus,Security,MBKE.NPATMI,MBKE.NPATMI,NULL,NULL,1,NULL,104,Billion,NULL,40:02.3,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2117,Diamond,Consensus,Security,MBKE.Target_Price,MBKE.Target_Price,NULL,NULL,1,NULL,105,NULL,NULL,40:15.7,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2142,Diamond,Consensus,Security,MBS,MBS,NULL,NULL,1,NULL,0,NULL,NULL,08:20.4,dangvu@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2143,Diamond,Consensus,Security,MBS.NPATMI,MBS.NPATMI,NULL,NULL,1,NULL,0,Billion,NULL,08:20.4,dangvu@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2144,Diamond,Consensus,Security,MBS.Target_Price,MBS.Target_Price,NULL,NULL,1,NULL,0,NULL,NULL,08:20.4,dangvu@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1320,Diamond,Income Statement,Security,Minority expense,Minority_Expense,NULL,#NAME?,1,NULL,64,Billion,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1294,Diamond,Balance Sheet,Security,Minority interests,Minority_Interest,NULL,BS.168+BS.163,1,NULL,33,Billion,NULL,13:41.3,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1304,Diamond,Income Statement,Security,Net Brokerage Income,Net_Brokerage_Income,NULL,Gross_brokerage_Income+Gross_brokerage_expense,1,NULL,48,Billion,NULL,05:20.4,ducle@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1301,Diamond,Income Statement,Security,Net Capital Income,Net_Capital_Income,NULL,Net_Margin_lending_Income+Net_Investment,1,NULL,45,Billion,NULL,04:11.1,ducle@dragoncapital.com,1,NULL,0,0,0,0,NULL
+1307,Diamond,Income Statement,Security,Net fee income,Net_Fee_Income,NULL,Net_Brokerage_Income+Net_IB_Income+Net_other_operating_income,1,NULL,51,Billion,NULL,05:25.3,ducle@dragoncapital.com,1,NULL,0,0,0,0,NULL
+1305,Diamond,Income Statement,Security,Net IB Income,Net_IB_Income,NULL,IS.12+IS.13+IS.15+IS.11+IS.16+IS.17+IS.18+IS.34+IS.35+IS.36+IS.38,1,NULL,49,Billion,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1297,Diamond,Income Statement,Security,Net Interest Income,Net_Interest_Income,NULL,IS.6,1,NULL,41,Billion,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1299,Diamond,Income Statement,Security,Net Investment Income,Net_investment_income,NULL,Net_Trading_Income+Net_Interest_Income,1,NULL,43,Billion,NULL,04:06.6,ducle@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1300,Diamond,Income Statement,Security,Net Margin lending Income,Net_Margin_lending_Income,NULL,IS.7+IS.30,1,NULL,44,Billion,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1313,Diamond,Income Statement,Security,Net other income,Net_Other_Income,NULL,IS.54+IS.63+IS.52,1,NULL,57,Billion,NULL,31:17.4,ducle@dragoncapital.com,1,NULL,0,0,0,0,NULL
+1306,Diamond,Income Statement,Security,Net other operating income,Net_other_operating_income,NULL,IS.14+IS.19+IS.20+IS.37+IS.39+IS.40,1,NULL,50,Billion,NULL,44:56.9,ducle@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1308,Diamond,Income Statement,Security,Net Revenue,Net_Revenue,NULL,Net_Capital_Income+Net_Fees_Income,1,NULL,52,Billion,NULL,05:30.0,ducle@dragoncapital.com,1,NULL,0,0,0,1,NULL
+1298,Diamond,Income Statement,Security,Net Trading Income,Net_Trading_Income,NULL,IS.3+IS.4+IS.5+IS.8+IS.9+IS.27+IS.24+IS.25+IS.26+IS.29+IS.28+IS.31+IS.32,1,NULL,42,Billion,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1351,Ratio,Capital Efficiency,Security,NIM,NIM,NULL,(Net_Interest_Income+Net_Margin_lending_Income+Interest_Expense)/(Average2Y_Interest_Earning_Asset-Average2Y_AFS_MV-Average2Y_FVTPL_MV),1,NULL,1,NULL,0,57:57.6,hai@athenapros.com,0,NULL,0,1,0,0,NULL
+1279,Diamond,Balance Sheet,Security,NON-INTEREST EARNING ASSET,Non_Interest_Earning_asset,NULL,Cash_Equivalent+ACCOUNT_RECEIVABLE+INVESTMENT_ASSOCIATE+INVESTMENT_PROPERTY+FIXED_ASSET+OTHER_CURRENT_ASSET+Other_long_term_asset,1,NULL,9,Billion,NULL,45:21.0,ducle@dragoncapital.com,1,NULL,0,0,0,0,NULL
+1319,Diamond,Income Statement,Security,NPAT,NPAT,NULL,is.71,1,NULL,63,Billion,NULL,02:11.7,ducle@dragoncapital.com,1,NULL,0,0,0,0,NULL
+1321,Diamond,Income Statement,Security,NPATMI,NPATMI,NULL,NPAT+Minority_Expense,1,NULL,65,Billion,NULL,57:47.9,tri.pham@dragoncapital.com,0,NULL,0,0,0,1,NULL
+1323,Diamond,Income Statement,Security,PATMI - after bonus,NPATMIWF,NULL,NPATMI+Welfare_Fund,1,NULL,67,Billion,NULL,48:05.4,tri.pham@dragoncapital.com,1,NULL,0,0,0,0,NULL
+1356,Ratio,Profitability and Dividend,Security,CIR (excl Net Investment),NULL,NULL,#NAME?,1,NULL,12,NULL,0,50:58.3,ducle@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1354,Ratio,Capital Efficiency,Security,Interest expense,NULL,NULL,#NAME?,1,NULL,4,NULL,0,50:11.2,ducle@dragoncapital.com,0,NULL,0,1,0,0,NULL
+1324,Diamond,Income Statement,Security,Outstanding Shares,OS,NULL,OS,1,NULL,68,Million,NULL,57:51.7,tri.pham@dragoncapital.com,0,NULL,1,0,0,1,NULL
+1277,Diamond,Balance Sheet,Security,Other current asset,Other_Current_Asset,NULL,BS.31+BS.34,1,NULL,15,Billion,NULL,42:57.2,ducle@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1292,Diamond,Balance Sheet,Security,Other funds,Other_Funds,NULL,BS.157+BS.150+BS.147+BS.164+BS.156+BS.154,1,NULL,31,Billion,NULL,26:05.6,ducle@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1270,Diamond,Balance Sheet,Security,Other investment asset,Other_Investment_Asset,NULL,BS.60,1,NULL,8,Billion,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1285,Diamond,Balance Sheet,Security,Other liabilities,Other_Liabilities,NULL,BS.140+BS.141+BS.134+BS.133+BS.130+BS.112+BS.111+BS.118,1,NULL,24,Billion,NULL,37:35.6,ducle@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1278,Diamond,Balance Sheet,Security,Other long-term asset,Other_long_term_asset,NULL,BS.83+BS.90+BS.91,1,NULL,16,Billion,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1611,Ratio,Valuation ,Security,P/B,P/B,NULL,Current_Price/((Total_Equity-Minority_Interest)/OS),1,NULL,3,NULL,0,49:19.7,hai@athenapros.com,0,NULL,1,1,0,0,NULL
+1613,Ratio,Valuation ,Security,P/E,P/E,NULL,Current_Price/EPS,1,NULL,2,NULL,0,26:29.8,ducle@dragoncapital.com,0,NULL,1,1,0,0,NULL
+2210,Ratio,Valuation ,Security,P/S,P/S,NULL,MarketCap/Net_Revenue,1,NULL,4,NULL,0,48:50.5,hai@athenapros.com,0,NULL,1,1,0,0,NULL
+1317,Diamond,Income Statement,Security,PBT,PBT,NULL,is.65,1,NULL,61,Billion,NULL,21:41.2,ducle@dragoncapital.com,1,NULL,0,0,0,1,NULL
+2185,Diamond,Consensus,Security,PHS,PHS,NULL,NULL,1,NULL,0,NULL,NULL,31:57.8,chinhtruong@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2186,Diamond,Consensus,Security,PHS.NPATMI,PHS.NPATMI,NULL,NULL,1,NULL,0,Billion,NULL,31:57.8,chinhtruong@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2187,Diamond,Consensus,Security,PHS.Target_Price,PHS.Target_Price,NULL,NULL,1,NULL,0,NULL,NULL,31:57.8,chinhtruong@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1259,Diamond,Overview,Security,Recommendation,Recommendation,NULL,NULL,1,NULL,3,NULL,NULL,01:41.6,tri.pham@dragoncapital.com,0,Text,0,0,0,0,NULL
+1293,Diamond,Balance Sheet,Security,Retain earning,Retain_Earning,NULL,BS.158,1,NULL,32,Billion,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1358,Ratio,Profitability and Dividend,Security,"	Return on Assets %",ROA,NULL,NPAT/Average2Y_TOTAL_Asset,1,NULL,14,NULL,0,09:25.2,ducle@dragoncapital.com,0,NULL,0,1,0,0,NULL
+1359,Ratio,Profitability and Dividend,Security,Return on Equity %,ROE,NULL,NPATMI/(Average2Y_TOTAL_Equity-Average2Y_Minority_Interest),1,NULL,15,NULL,0,25:02.7,ducle@dragoncapital.com,0,NULL,0,1,0,0,NULL
+1340,Diamond,X-Factor,Security,Sector Dynamics,Sector_prospect,NULL,NULL,1,NULL,84,NULL,NULL,58:17.7,ducle@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1309,Diamond,Income Statement,Security,SG&A,SG_A,NULL,IS.57+IS.58,1,NULL,53,Billion,NULL,06:08.1,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1287,Diamond,Balance Sheet,Security,Share capital,Share_Capital,NULL,BS.145,1,NULL,26,Billion,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1288,Diamond,Balance Sheet,Security,Share premium,Share_Premium,NULL,BS.148,1,NULL,27,Billion,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1636,Diamond,Supplements,Security,Short Investment,Short_Investment,NULL,BS.7+BS.59,1,NULL,5,Billion,NULL,22:36.2,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1326,Diamond,Consensus,Security,SSI,SSI,NULL,NULL,1,NULL,70,NULL,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1327,Diamond,Consensus,Security,SSI.NPATMI,SSI.NPATMI,NULL,NULL,1,NULL,71,Billion,NULL,32:49.4,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1328,Diamond,Consensus,Security,SSI.Target_Price,SSI.Target_Price,NULL,NULL,1,NULL,72,NULL,NULL,32:56.5,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1283,Diamond,Balance Sheet,Security,Short-term borrowing,ST_Debt,NULL,BS.95+BS.100,1,NULL,21,Billion,NULL,56:47.8,tri.pham@dragoncapital.com,0,NULL,0,0,0,1,NULL
+1632,Diamond,X-Factor,Security,Stock Aspects,Stock_Aspects,NULL,(Market_aspect+Flow)/2,1,NULL,90,NULL,0,52:38.3,duynguyen@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1859,Ratio,Profitability and Dividend,Security,Stock Return %,Stock_Return,NULL,NULL,1,NULL,18,NULL,0,17:39.7,tri.pham@dragoncapital.com,0,NULL,1,0,0,0,NULL
+1606,Diamond,X-Factor,Security,Total Score,Sum_X_Factor,NULL,(Corporate_governance+Financial_health+12m_growth_prospect+Long_term_growth_prospect+Sector_prospect+Market_aspect+Flow+Valuation)/8,1,NULL,89,NULL,0,17:47.7,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1261,Diamond,Overview,Security,TARGET PRICE,Target_Price,NULL,NULL,1,NULL,5,NULL,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+2037,Diamond,Others,Security,Target Price Comment,Target_Price_Comment,NULL,NULL,1,NULL,1,NULL,NULL,44:20.2,tri.pham@dragoncapital.com,0,Text,0,0,0,0,NULL
+1318,Diamond,Income Statement,Security,Tax expense,Tax_Expense,NULL,IS.68,1,NULL,62,Billion,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1257,Diamond,Overview,Security,Company Code,Ticker,NULL,NULL,1,NULL,1,NULL,NULL,04:45.6,tri.pham@dragoncapital.com,0,Text,0,0,0,0,NULL
+1280,Diamond,Balance Sheet,Security,TOTAL ASSET,Total_Asset,NULL,BS.92,1,NULL,17,Billion,NULL,55:48.3,tri.pham@dragoncapital.com,1,NULL,0,0,0,1,NULL
+1616,Ratio,Asset & Equity Structure,Security,Total Debt,Total_Debt,NULL,ST_Debt+LT_Debt,1,NULL,8,Billion,NULL,26:11.9,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1295,Diamond,Balance Sheet,Security,ONWERS' EQUITY,TOTAL_Equity,NULL,BS.142,1,NULL,25,Billion,NULL,56:28.9,tri.pham@dragoncapital.com,1,NULL,0,0,0,1,NULL
+2195,Diamond,NULL,Security,Total investment,Total_Investment,NULL,FVTPL_MV+(AFS_MV)+(Investment_provision)+(HTM_BV),1,NULL,106,Billion,NULL,01:49.7,hai@athenapros.com,0,NULL,0,0,0,0,NULL
+1286,Diamond,Balance Sheet,Security,LIABILITIES,Total_Liabilities,NULL,BS.93,1,NULL,18,Billion,NULL,33:53.4,ducle@dragoncapital.com,1,NULL,0,0,0,0,NULL
+1296,Diamond,Balance Sheet,Security,TOTAL RESOURCES,TOTAL_Resources,NULL,TOTAL_LIABILITIES+TOTAL_EQUITY,1,NULL,34,Billion,NULL,34:13.6,ducle@dragoncapital.com,1,NULL,0,0,0,0,NULL
+1289,Diamond,Balance Sheet,Security,Treasury shares,Treasury_Share,NULL,BS.151,1,NULL,28,Billion,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1263,Diamond,Overview,Security,Upper Bound,Upper_Bound_Price,NULL,NULL,1,NULL,7,NULL,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+2039,Diamond,Others,Security,UB Price Comment,Upper_Bound_Price_Comment,NULL,NULL,1,NULL,3,NULL,NULL,45:08.4,tri.pham@dragoncapital.com,0,Text,0,0,0,0,NULL
+1344,Diamond,X-Factor,Security,Valuation,Valuation,NULL,NULL,1,NULL,88,NULL,NULL,18:52.5,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2094,Diamond,Consensus,Security,VCBS,VCBS,NULL,NULL,1,NULL,82,NULL,NULL,34:33.8,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2095,Diamond,Consensus,Security,VCBS.NPATMI,VCBS.NPATMI,NULL,NULL,1,NULL,83,Billion,NULL,34:48.2,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2096,Diamond,Consensus,Security,VCBS.Target_Price,VCBS.Target_Price,NULL,NULL,1,NULL,84,NULL,NULL,35:03.1,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1332,Diamond,Consensus,Security,VCSC,VCSC,NULL,NULL,1,NULL,76,NULL,NULL,52:24.9,NULL,0,NULL,0,0,0,0,NULL
+1333,Diamond,Consensus,Security,VCSC.NPATMI,VCSC.NPATMI,NULL,NULL,1,NULL,77,Billion,NULL,33:19.9,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1334,Diamond,Consensus,Security,VCSC.Target_Price,VCSC.Target_Price,NULL,NULL,1,NULL,78,NULL,NULL,33:28.2,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2103,Diamond,Consensus,Security,VDSC,VDSC,NULL,NULL,1,NULL,91,NULL,NULL,36:51.5,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2104,Diamond,Consensus,Security,VDSC.NPATMI,VDSC.NPATMI,NULL,NULL,1,NULL,92,Billion,NULL,37:16.6,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2105,Diamond,Consensus,Security,VDSC.Target_Price,VDSC.Target_Price,NULL,NULL,1,NULL,93,NULL,NULL,37:30.7,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2100,Diamond,Consensus,Security,VND,VND,NULL,NULL,1,NULL,88,NULL,NULL,36:03.6,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2101,Diamond,Consensus,Security,VND.NPATMI,VND.NPATMI,NULL,NULL,1,NULL,89,Billion,NULL,36:16.7,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+2102,Diamond,Consensus,Security,VND.Target_Price,VND.Target_Price,NULL,NULL,1,NULL,90,NULL,NULL,36:35.4,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
+1322,Diamond,Income Statement,Security,Bonus and welfare fund,Welfare_Fund,NULL,NULL,1,NULL,66,Billion,NULL,47:58.1,tri.pham@dragoncapital.com,0,NULL,0,0,0,0,NULL
