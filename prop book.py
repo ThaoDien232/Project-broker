@@ -35,6 +35,11 @@ def fetch_historical_price(ticker: str) -> pd.DataFrame:
     Fetch daily stock prices from TCBS API for the given ticker.
     Returns DataFrame with 'tradingDate', 'open', 'high', 'low', 'close', 'volume'.
     """
+    # Add individual ticker caching to reduce API calls
+    cache_key = f"ticker_data_{ticker}"
+    if cache_key in st.session_state.price_cache:
+        return st.session_state.price_cache[cache_key]
+        
     url = "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term"
     params = {
         "ticker": ticker,
@@ -48,7 +53,8 @@ def fetch_historical_price(ticker: str) -> pd.DataFrame:
         "Accept": "application/json"
     }
     try:
-        response = requests.get(url, params=params, headers=headers, timeout=10)
+        print(f"Fetching data for {ticker}...")  # Debug output
+        response = requests.get(url, params=params, headers=headers, timeout=15)  # Increased timeout
         response.raise_for_status()
         data = response.json()
         if 'data' in data and data['data']:
@@ -61,12 +67,17 @@ def fetch_historical_price(ticker: str) -> pd.DataFrame:
                     df['tradingDate'] = pd.to_datetime(df['tradingDate'], unit='ms')
             # Only keep relevant columns
             keep = ['tradingDate', 'open', 'high', 'low', 'close', 'volume']
-            return df[[col for col in keep if col in df.columns]]
+            result_df = df[[col for col in keep if col in df.columns]]
+            
+            # Cache the ticker data
+            st.session_state.price_cache[cache_key] = result_df
+            print(f"Successfully fetched data for {ticker}")
+            return result_df
         else:
-            print("No data found in response")
+            print(f"No data found in response for {ticker}")
             return pd.DataFrame()
     except Exception as e:
-        print(f"Error fetching data: {e}")
+        print(f"Error fetching data for {ticker}: {e}")
         return pd.DataFrame()
 
 def get_close_price(df: pd.DataFrame, target_date: str = None):
@@ -91,18 +102,25 @@ def get_quarter_end_prices(tickers, quarter, use_cache=True):
     if use_cache and cache_key in st.session_state.price_cache:
         return st.session_state.price_cache[cache_key]
     
+    print(f"Fetching quarter-end prices for {len(tickers)} tickers for {quarter}...")  # Debug
     q_map = {"1Q":"-03-31", "2Q":"-06-30", "3Q":"-09-30", "4Q":"-12-31"}
     q_part, y_part = quarter[:2], quarter[2:]
     date_str = f"{2000+int(y_part)}{q_map.get(q_part, '-12-31')}"
     prices = {}
-    for ticker in tickers:
+    
+    # Add delay between API calls to avoid rate limiting
+    import time
+    for i, ticker in enumerate(tickers):
         if ticker.upper() == "OTHERS":
             prices[ticker] = None
         else:
+            if i > 0:  # Add small delay between requests
+                time.sleep(0.1)
             price_df = fetch_historical_price(ticker)
             prices[ticker] = get_close_price(price_df, date_str)
     
     st.session_state.price_cache[cache_key] = prices
+    print(f"Completed fetching quarter-end prices for {quarter}")
     return prices
 
 def get_current_prices(tickers, use_cache=True):
@@ -111,17 +129,24 @@ def get_current_prices(tickers, use_cache=True):
     if use_cache and cache_key in st.session_state.price_cache:
         return st.session_state.price_cache[cache_key]
     
+    print(f"Fetching current prices for {len(tickers)} tickers...")  # Debug
     prices = {}
-    for ticker in tickers:
+    
+    # Add delay between API calls to avoid rate limiting
+    import time
+    for i, ticker in enumerate(tickers):
         if ticker.upper() == "OTHERS":
             prices[ticker] = 0
         else:
+            if i > 0:  # Add small delay between requests
+                time.sleep(0.1)
             price_df = fetch_historical_price(ticker)
             prices[ticker] = get_close_price(price_df)
     
     st.session_state.price_cache[cache_key] = prices
     vietnam_tz = timezone(timedelta(hours=7))
     st.session_state.price_last_updated = datetime.now(vietnam_tz).strftime("%Y-%m-%d %H:%M:%S GMT+7")
+    print(f"Completed fetching current prices")
     return prices
 
 def calculate_profit_loss(df, quarter_prices, current_prices, quarter):
