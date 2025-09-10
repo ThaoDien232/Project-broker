@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import requests
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 st.set_page_config(layout="wide")
 
 # Initialize session state for price data
@@ -120,7 +120,8 @@ def get_current_prices(tickers, use_cache=True):
             prices[ticker] = get_close_price(price_df)
     
     st.session_state.price_cache[cache_key] = prices
-    st.session_state.price_last_updated = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    vietnam_tz = timezone(timedelta(hours=7))
+    st.session_state.price_last_updated = datetime.now(vietnam_tz).strftime("%Y-%m-%d %H:%M:%S GMT+7")
     return prices
 
 def calculate_profit_loss(df, quarter_prices, current_prices, quarter):
@@ -323,7 +324,8 @@ with col1:
     if st.button("Refresh Prices"):
         # Clear price cache and update timestamp
         st.session_state.price_cache = {}
-        st.session_state.price_last_updated = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        vietnam_tz = timezone(timedelta(hours=7))
+        st.session_state.price_last_updated = datetime.now(vietnam_tz).strftime("%Y-%m-%d %H:%M:%S GMT+7")
         st.rerun()
 
 # Display last price update timestamp in col1 (under Refresh Prices button)
