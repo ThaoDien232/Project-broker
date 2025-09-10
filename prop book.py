@@ -1,23 +1,10 @@
 import streamlit as st
-import toml
-
-# Load theme from config.toml
-theme_config = toml.load("utils/config.toml")
-theme = theme_config["theme"]
-primary_color = theme["primaryColor"]
-background_color = theme["backgroundColor"]
-secondary_background_color = theme["secondaryBackgroundColor"]
-text_color = theme["textColor"]
-font_family = theme["font"]
 import pandas as pd
 import requests
 from datetime import datetime
-import re
-from urllib.parse import quote
+st.set_page_config(layout="wide")
 
-st.set_page_config(page_title="Prop Book Dashboard", layout="wide")
-
-# Initialize session state for price data caching
+# Initialize session state for price data
 if 'price_cache' not in st.session_state:
     st.session_state.price_cache = {}
 if 'price_last_updated' not in st.session_state:
@@ -27,7 +14,7 @@ if 'price_last_updated' not in st.session_state:
 @st.cache_data
 def load_data():
     try:
-        return pd.read_excel("sql/Prop book.xlsx")
+        return pd.read_excel("Prop book.xlsx")
     except Exception as e:
         st.error(f"Error loading Excel file: {e}")
         return pd.DataFrame()
@@ -43,55 +30,14 @@ def sort_quarters_by_date(quarters):
             return q
     return sorted(quarters, key=key)
 
-def is_valid_ticker(ticker: str) -> bool:
-    """
-    Validate if ticker is likely a real stock symbol.
-    Returns False for placeholder/category names.
-    """
-    if not ticker or len(ticker.strip()) == 0:
-        return False
-    
-    # Convert to uppercase for checking
-    ticker_upper = ticker.upper().strip()
-    
-    # Invalid ticker patterns
-    invalid_patterns = [
-        'OTHER', 'OTHERS', 'UNLISTED', 'PBT', 'TOTAL', 'CASH', 'BOND',
-        'DEPOSIT', 'RECEIVABLE', 'PAYABLE', 'EQUITY', 'LIABILITY'
-    ]
-    
-    # Check if ticker contains invalid patterns
-    for pattern in invalid_patterns:
-        if pattern in ticker_upper:
-            return False
-    
-    # Check if ticker contains spaces (likely not a valid stock symbol)
-    if ' ' in ticker.strip():
-        return False
-    
-    # Valid Vietnamese stock tickers are typically 3-4 characters, all uppercase letters
-    if re.match(r'^[A-Z]{2,5}$', ticker_upper):
-        return True
-    
-    return False
-
 def fetch_historical_price(ticker: str) -> pd.DataFrame:
     """
     Fetch daily stock prices from TCBS API for the given ticker.
     Returns DataFrame with 'tradingDate', 'open', 'high', 'low', 'close', 'volume'.
     """
-    # Validate ticker before making API call
-    if not is_valid_ticker(ticker):
-        print(f"Skipping invalid ticker: {ticker}")
-        return pd.DataFrame()
-    
     url = "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term"
-    
-    # Clean and encode ticker properly
-    clean_ticker = ticker.strip().upper()
-    
     params = {
-        "ticker": clean_ticker,
+        "ticker": ticker,
         "type": "stock",
         "resolution": "D",
         "from": "0",
@@ -117,19 +63,10 @@ def fetch_historical_price(ticker: str) -> pd.DataFrame:
             keep = ['tradingDate', 'open', 'high', 'low', 'close', 'volume']
             return df[[col for col in keep if col in df.columns]]
         else:
-            print(f"No data found for ticker: {clean_ticker}")
+            print("No data found in response")
             return pd.DataFrame()
-    except requests.exceptions.HTTPError as e:
-        if e.response.status_code == 400:
-            print(f"Invalid ticker '{clean_ticker}': {e}")
-        else:
-            print(f"HTTP error fetching data for '{clean_ticker}': {e}")
-        return pd.DataFrame()
-    except requests.exceptions.RequestException as e:
-        print(f"Network error fetching data for '{clean_ticker}': {e}")
-        return pd.DataFrame()
     except Exception as e:
-        print(f"Unexpected error fetching data for '{clean_ticker}': {e}")
+        print(f"Error fetching data: {e}")
         return pd.DataFrame()
 
 def get_close_price(df: pd.DataFrame, target_date: str = None):
@@ -148,43 +85,42 @@ def get_close_price(df: pd.DataFrame, target_date: str = None):
     else:
         return df.iloc[-1]['close']
 
-def get_quarter_end_prices(tickers, quarter):
+def get_quarter_end_prices(tickers, quarter, use_cache=True):
+    cache_key = f"quarter_{quarter}_{','.join(sorted(tickers))}"
+    
+    if use_cache and cache_key in st.session_state.price_cache:
+        return st.session_state.price_cache[cache_key]
+    
     q_map = {"1Q":"-03-31", "2Q":"-06-30", "3Q":"-09-30", "4Q":"-12-31"}
     q_part, y_part = quarter[:2], quarter[2:]
     date_str = f"{2000+int(y_part)}{q_map.get(q_part, '-12-31')}"
     prices = {}
     for ticker in tickers:
-        # Skip invalid tickers
-        if not is_valid_ticker(ticker):
+        if ticker.upper() == "OTHERS":
             prices[ticker] = None
         else:
-            # Check if price is cached
-            cache_key = f"{ticker}_{quarter}_quarter_end"
-            if cache_key in st.session_state.price_cache:
-                prices[ticker] = st.session_state.price_cache[cache_key]
-            else:
-                price_df = fetch_historical_price(ticker)
-                price = get_close_price(price_df, date_str)
-                st.session_state.price_cache[cache_key] = price
-                prices[ticker] = price
+            price_df = fetch_historical_price(ticker)
+            prices[ticker] = get_close_price(price_df, date_str)
+    
+    st.session_state.price_cache[cache_key] = prices
     return prices
 
-def get_current_prices(tickers):
+def get_current_prices(tickers, use_cache=True):
+    cache_key = f"current_{','.join(sorted(tickers))}"
+    
+    if use_cache and cache_key in st.session_state.price_cache:
+        return st.session_state.price_cache[cache_key]
+    
     prices = {}
     for ticker in tickers:
-        # Skip invalid tickers
-        if not is_valid_ticker(ticker):
+        if ticker.upper() == "OTHERS":
             prices[ticker] = 0
         else:
-            # Check if price is cached
-            cache_key = f"{ticker}_current"
-            if cache_key in st.session_state.price_cache:
-                prices[ticker] = st.session_state.price_cache[cache_key]
-            else:
-                price_df = fetch_historical_price(ticker)
-                price = get_close_price(price_df)
-                st.session_state.price_cache[cache_key] = price
-                prices[ticker] = price
+            price_df = fetch_historical_price(ticker)
+            prices[ticker] = get_close_price(price_df)
+    
+    st.session_state.price_cache[cache_key] = prices
+    st.session_state.price_last_updated = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     return prices
 
 def calculate_profit_loss(df, quarter_prices, current_prices, quarter):
@@ -274,8 +210,8 @@ def formatted_table(df, selected_quarters=None, key_suffix="", show_selectbox=Tr
         # If all tickers have zero for the latest quarter, revert to previous quarter for all
         if all_latest_zero:
             q = nonzero_quarters[-1]
-            q_price = get_quarter_end_prices([t], q)[t]
-            c_price = get_current_prices([t])[t]
+            q_price = get_quarter_end_prices([t], q, use_cache=True)[t]
+            c_price = get_current_prices([t], use_cache=True)[t]
             val = pivot_table.at[t, q]
             if q_price and c_price and q_price != 0 and val != 0:
                 vol = val / q_price
@@ -292,8 +228,8 @@ def formatted_table(df, selected_quarters=None, key_suffix="", show_selectbox=Tr
             # Only calculate for tickers with nonzero value in the latest quarter
             if pivot_table.at[t, latest_quarter] != 0:
                 q = latest_quarter
-                q_price = get_quarter_end_prices([t], q)[t]
-                c_price = get_current_prices([t])[t]
+                q_price = get_quarter_end_prices([t], q, use_cache=True)[t]
+                c_price = get_current_prices([t], use_cache=True)[t]
                 val = pivot_table.at[t, q]
                 if q_price and c_price and q_price != 0 and val != 0:
                     vol = val / q_price
@@ -373,13 +309,14 @@ def formatted_table(df, selected_quarters=None, key_suffix="", show_selectbox=Tr
 
 st.title("Prop Book Dashboard")
 
-# Move Reload data to sidebar
+# Sidebar with data reload button
 with st.sidebar:
+    st.header("Data Controls")
     if st.button("🔄 Reload Data"):
         st.cache_data.clear()
         st.rerun()
 
-# Add refresh price and export buttons with upload page link
+# Main page buttons for price refresh and export
 col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
 
 with col1:
@@ -389,11 +326,12 @@ with col1:
         st.session_state.price_last_updated = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         st.rerun()
 
-# Display last price update time
-if st.session_state.price_last_updated:
-    st.caption(f"Prices last updated: {st.session_state.price_last_updated}")
-else:
-    st.caption("Prices not yet loaded")
+# Display last price update timestamp in col1 (under Refresh Prices button)
+with col1:
+    if st.session_state.price_last_updated:
+        st.caption(f"Prices last updated: {st.session_state.price_last_updated}")
+    else:
+        st.caption("Prices not yet loaded")
 
 def display_prop_book_table():
     """Display prop book data by broker and quarter"""
@@ -481,11 +419,11 @@ def display_prop_book_table():
     with st.spinner("Loading data and calculating price changes..."):
         # Use available_quarters for both display and calculation
         formatted_df = formatted_table(filtered_df, available_quarters, key_suffix=f"display_{selected_brokers}")
-        st.dataframe(formatted_df, use_container_width=True)
+        st.dataframe(formatted_df, width='stretch')
 
 # Main application
 def main():
     display_prop_book_table()
 
 if __name__ == "__main__":
-    main()
+    main ()
