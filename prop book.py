@@ -1,14 +1,76 @@
 import streamlit as st
 import pandas as pd
 import requests
+import os
+import json
 from datetime import datetime, timezone, timedelta
 st.set_page_config(layout="wide")
+
+# Shared price cache file
+PRICE_CACHE_FILE = "shared_price_cache.json"
+PRICE_TIMESTAMP_FILE = "price_last_updated.txt"
 
 # Initialize session state for price data
 if 'price_cache' not in st.session_state:
     st.session_state.price_cache = {}
 if 'price_last_updated' not in st.session_state:
     st.session_state.price_last_updated = None
+
+def load_shared_timestamp():
+    """Load the shared price update timestamp from file"""
+    try:
+        if os.path.exists(PRICE_TIMESTAMP_FILE):
+            with open(PRICE_TIMESTAMP_FILE, 'r') as f:
+                return f.read().strip()
+    except Exception as e:
+        print(f"Error loading shared timestamp: {e}")
+    return None
+
+def save_shared_timestamp(timestamp_str):
+    """Save the shared price update timestamp to file"""
+    try:
+        with open(PRICE_TIMESTAMP_FILE, 'w') as f:
+            f.write(timestamp_str)
+    except Exception as e:
+        print(f"Error saving shared timestamp: {e}")
+
+def load_shared_cache():
+    """Load the shared price cache from file"""
+    try:
+        if os.path.exists(PRICE_CACHE_FILE):
+            with open(PRICE_CACHE_FILE, 'r') as f:
+                return json.load(f)
+    except Exception as e:
+        print(f"Error loading shared cache: {e}")
+    return {}
+
+def save_shared_cache(cache_data):
+    """Save the shared price cache to file"""
+    try:
+        with open(PRICE_CACHE_FILE, 'w') as f:
+            json.dump(cache_data, f, indent=2)
+    except Exception as e:
+        print(f"Error saving shared cache: {e}")
+
+def is_cache_fresh(hours=1):
+    """Check if the shared cache is fresh (within specified hours)"""
+    timestamp_str = load_shared_timestamp()
+    if not timestamp_str:
+        return False
+    
+    try:
+        # Parse the timestamp
+        cache_time = datetime.strptime(timestamp_str.replace(' GMT+7', ''), "%Y-%m-%d %H:%M:%S")
+        vietnam_tz = timezone(timedelta(hours=7))
+        cache_time = cache_time.replace(tzinfo=vietnam_tz)
+        
+        # Check if it's within the specified hours
+        now = datetime.now(vietnam_tz)
+        time_diff = now - cache_time
+        return time_diff.total_seconds() < (hours * 3600)
+    except Exception as e:
+        print(f"Error checking cache freshness: {e}")
+        return False
 
 # Load the prop book data with error handling
 @st.cache_data
@@ -35,10 +97,28 @@ def fetch_historical_price(ticker: str) -> pd.DataFrame:
     Fetch daily stock prices from TCBS API for the given ticker.
     Returns DataFrame with 'tradingDate', 'open', 'high', 'low', 'close', 'volume'.
     """
-    # Add individual ticker caching to reduce API calls
+    # Check both session and shared cache
     cache_key = f"ticker_data_{ticker}"
+    
+    # First check session cache
     if cache_key in st.session_state.price_cache:
         return st.session_state.price_cache[cache_key]
+    
+    # Then check shared cache if it's fresh
+    if is_cache_fresh(hours=1):
+        shared_cache = load_shared_cache()
+        if cache_key in shared_cache:
+            # Convert back to DataFrame
+            try:
+                df_data = shared_cache[cache_key]
+                if df_data:  # Not empty
+                    df = pd.DataFrame(df_data)
+                    if 'tradingDate' in df.columns:
+                        df['tradingDate'] = pd.to_datetime(df['tradingDate'])
+                    st.session_state.price_cache[cache_key] = df
+                    return df
+            except Exception as e:
+                print(f"Error loading cached data for {ticker}: {e}")
         
     url = "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term"
     params = {
@@ -69,8 +149,14 @@ def fetch_historical_price(ticker: str) -> pd.DataFrame:
             keep = ['tradingDate', 'open', 'high', 'low', 'close', 'volume']
             result_df = df[[col for col in keep if col in df.columns]]
             
-            # Cache the ticker data
+            # Cache the ticker data in both session and shared cache
             st.session_state.price_cache[cache_key] = result_df
+            
+            # Save to shared cache
+            shared_cache = load_shared_cache()
+            shared_cache[cache_key] = result_df.to_dict('records') if not result_df.empty else []
+            save_shared_cache(shared_cache)
+            
             print(f"Successfully fetched data for {ticker}")
             return result_df
         else:
@@ -346,17 +432,37 @@ with st.sidebar:
 col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
 
 with col1:
-    if st.button("Refresh Prices"):
-        # Clear price cache and update timestamp
-        st.session_state.price_cache = {}
-        vietnam_tz = timezone(timedelta(hours=7))
-        st.session_state.price_last_updated = datetime.now(vietnam_tz).strftime("%Y-%m-%d %H:%M:%S GMT+7")
-        st.rerun()
+    refresh_clicked = st.button("Refresh Prices")
+    
+    # Check if we should allow refresh (prevent too frequent refreshes)
+    can_refresh = not is_cache_fresh(hours=0.5)  # Allow refresh every 30 minutes
+    
+    if refresh_clicked:
+        if can_refresh:
+            # Clear both session and shared cache
+            st.session_state.price_cache = {}
+            save_shared_cache({})  # Clear shared cache
+            
+            vietnam_tz = timezone(timedelta(hours=7))
+            timestamp_str = datetime.now(vietnam_tz).strftime("%Y-%m-%d %H:%M:%S GMT+7")
+            st.session_state.price_last_updated = timestamp_str
+            save_shared_timestamp(timestamp_str)  # Save shared timestamp
+            st.rerun()
+        else:
+            st.warning("⏰ Prices were recently updated. Please wait at least 30 minutes between refreshes to avoid overloading the API.")
 
 # Display last price update timestamp in col1 (under Refresh Prices button)
 with col1:
+    # Load shared timestamp if session doesn't have it
+    if not st.session_state.price_last_updated:
+        st.session_state.price_last_updated = load_shared_timestamp()
+    
     if st.session_state.price_last_updated:
         st.caption(f"Prices last updated: {st.session_state.price_last_updated}")
+        if is_cache_fresh(hours=1):
+            st.caption("🟢 Price is fresh")
+        else:
+            st.caption("🟡 Price may need refresh")
     else:
         st.caption("Prices not yet loaded")
 
